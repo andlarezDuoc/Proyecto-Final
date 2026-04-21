@@ -1,12 +1,8 @@
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
-import { GallerySection } from "@/components/gallery-section"
-import { DesignsSection } from "@/components/designs-section"
-import { AboutSection } from "@/components/about-section"
-import { BookingSection } from "@/components/booking-section"
-import { LocationSection } from "@/components/location-section"
-import { WhatsAppChat } from "@/components/whatsapp-chat"
+import { MarketplaceSection } from "@/components/marketplace-section"
 import { Footer } from "@/components/footer"
+import { WhatsAppChat } from "@/components/whatsapp-chat"
 
 export default function HomePage() {
   return (
@@ -30,11 +26,7 @@ export default function HomePage() {
       <main className="relative z-10 min-h-screen">
         <Navigation />
         <HeroSection />
-        <GallerySection />
-        <DesignsSection />
-        <AboutSection />
-        <BookingSection />
-        <LocationSection />
+        <MarketplaceSection />
         <Footer />
         <WhatsAppChat />
       </main>

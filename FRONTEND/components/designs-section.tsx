@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { Button } from "@/components/ui/button"
 import { X, Sparkles, Calendar } from "lucide-react"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { Artist } from "@/lib/data/artists"
 
 const designSheets = [
   {
@@ -76,7 +77,11 @@ interface DesignSheet {
   designs: string
 }
 
-export function DesignsSection() {
+interface DesignsSectionProps {
+  artist: Artist;
+}
+
+export function DesignsSection({ artist }: DesignsSectionProps) {
   const [selectedSheet, setSelectedSheet] = useState<DesignSheet | null>(null)
 
   return (
@@ -94,10 +99,10 @@ export function DesignsSection() {
             <span className="text-sm font-medium">Diseños Listos para Tatuar</span>
           </div>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
-            Diseños <span className="text-chrome">Disponibles</span>
+            Diseños Disponibles de <span className="text-chrome">{artist.name.split(' ')[0]}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Explora mis hojas de diseños originales. Elige tu favorito y agéndalo directamente 
+            Explora las hojas de diseños originales de {artist.name}. Elige tu favorito y agéndalo directamente 
             o úsalo como inspiración para crear algo único.
           </p>
         </motion.div>

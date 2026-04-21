@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Artist } from "@/lib/data/artists"
 
 const timeSlots = [
   "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"
@@ -26,7 +27,11 @@ const services = [
   { id: "cover", name: "Cover Up", duration: "Variable", price: 80000 },
 ]
 
-export function BookingSection() {
+interface BookingSectionProps {
+  artist: Artist;
+}
+
+export function BookingSection({ artist }: BookingSectionProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
@@ -113,10 +118,10 @@ export function BookingSection() {
           className="text-center mb-16"
         >
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Agenda tu <span className="text-primary">Cita</span>
+            Agenda con <span className="text-primary">{artist.name.split(' ')[0]}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Reserva tu sesión online en pocos pasos. Confirma con un anticipo seguro.
+            Reserva tu sesión online con {artist.name}. Confirma tu cita con un anticipo seguro.
           </p>
         </motion.div>
 

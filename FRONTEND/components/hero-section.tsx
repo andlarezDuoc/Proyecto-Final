@@ -110,44 +110,45 @@ export function HeroSection() {
               <span className="block bg-gradient-to-r from-primary via-accent to-chrome bg-clip-text text-transparent">
                 Tattoo
               </span>
-              <span className="block text-foreground drop-shadow-lg text-4xl sm:text-5xl lg:text-6xl mt-2">Studio</span>
+              <span className="block text-foreground drop-shadow-lg text-4xl sm:text-5xl lg:text-6xl mt-2">Network</span>
             </h1>
 
             <p className="text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed backdrop-blur-sm bg-background/30 rounded-xl p-4">
-              Creo tatuajes que cuentan tu historia. Cada diseño es una 
-              obra de arte personalizada, fusionando mi pasión artística con tu visión.
+              Encuentra a los mejores artistas del tatuaje en un solo lugar. Explora estilos, 
+              portafolios y agenda tu próxima obra de arte con confianza.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 py-6 text-lg shadow-lg shadow-primary/25"
+                onClick={() => document.getElementById('artistas')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Agendar Cita
+                Buscar Artista
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="border-border hover:bg-secondary/80 text-foreground px-8 py-6 text-lg backdrop-blur-sm"
               >
-                Ver Mi Trabajo
+                Nuestra Comunidad
               </Button>
             </div>
 
             <div className="flex items-center gap-8 mt-12 justify-center lg:justify-start">
               <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
-                <p className="text-3xl font-bold text-foreground">500+</p>
+                <p className="text-3xl font-bold text-foreground">10+</p>
+                <p className="text-sm text-muted-foreground">Artistas</p>
+              </div>
+              <div className="w-px h-12 bg-border/50" />
+              <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
+                <p className="text-3xl font-bold text-foreground">15+</p>
+                <p className="text-sm text-muted-foreground">Estilos</p>
+              </div>
+              <div className="w-px h-12 bg-border/50" />
+              <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
+                <p className="text-3xl font-bold text-foreground">5k+</p>
                 <p className="text-sm text-muted-foreground">Tatuajes</p>
-              </div>
-              <div className="w-px h-12 bg-border/50" />
-              <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
-                <p className="text-3xl font-bold text-foreground">8+</p>
-                <p className="text-sm text-muted-foreground">Años</p>
-              </div>
-              <div className="w-px h-12 bg-border/50" />
-              <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
-                <p className="text-3xl font-bold text-foreground">100%</p>
-                <p className="text-sm text-muted-foreground">Pasión</p>
               </div>
             </div>
           </motion.div>

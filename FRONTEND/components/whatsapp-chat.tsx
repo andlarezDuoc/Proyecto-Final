@@ -243,7 +243,7 @@ export function WhatsAppChat() {
                               <button
                                 key={option}
                                 onClick={() => handleOptionClick(option)}
-                                className="text-xs px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-left"
+                                className="text-xs font-medium px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors text-left shadow-sm"
                               >
                                 {option}
                               </button>

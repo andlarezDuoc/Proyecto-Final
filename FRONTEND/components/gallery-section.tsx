@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { X, Heart, Share2, Calendar } from "lucide-react"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 
+import { Artist } from "@/lib/data/artists"
+
 const categories = [
   { id: "all", label: "Todos" },
   { id: "blackwork", label: "Blackwork" },
@@ -85,11 +87,25 @@ interface Tattoo {
   likes: number
 }
 
-export function GallerySection() {
+interface GallerySectionProps {
+  artist: Artist;
+}
+
+export function GallerySection({ artist }: GallerySectionProps) {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedTattoo, setSelectedTattoo] = useState<Tattoo | null>(null)
 
-  const filteredTattoos = tattoos.filter((tattoo) => {
+  // Map the artist's portfolio URLs to Mock Tattoos objects
+  const dynamictattoos: Tattoo[] = artist.portfolio.map((imgUrl, i) => ({
+    id: i + 1,
+    image: imgUrl,
+    title: `Obra ${i + 1}`,
+    category: "fineline", // Default to fineline as we are not distinguishing in the mock
+    description: `Diseño personalizado de tatuaje realizado por ${artist.name}.`,
+    likes: Math.floor(Math.random() * 500) + 100,
+  }));
+
+  const filteredTattoos = dynamictattoos.filter((tattoo) => {
     return selectedCategory === "all" || tattoo.category === selectedCategory
   })
 
@@ -105,7 +121,7 @@ export function GallerySection() {
           className="text-center mb-16"
         >
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Mi <span className="text-primary">Galería</span>
+            Portafolio de <span className="text-primary">{artist.name.split(' ')[0]}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explora mi colección de trabajos realizados. Cada tatuaje es único y cuenta una historia.

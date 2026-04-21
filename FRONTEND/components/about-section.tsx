@@ -4,8 +4,13 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { Instagram, Award, Heart, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Artist } from "@/lib/data/artists"
 
-export function AboutSection() {
+interface AboutSectionProps {
+  artist: Artist;
+}
+
+export function AboutSection({ artist }: AboutSectionProps) {
   return (
     <section id="sobre-mi" className="py-24 bg-secondary/30 relative overflow-hidden">
       {/* Blurred background decoration */}
@@ -43,8 +48,8 @@ export function AboutSection() {
           >
             <div className="relative aspect-[4/5] max-w-md mx-auto rounded-2xl overflow-hidden border border-primary/20 shadow-2xl">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cQTxFwzoRR4qyBudaOmzUdQxGKmJx6.png"
-                alt="Artista tatuadora"
+                src={artist.avatar}
+                alt={artist.name}
                 fill
                 className="object-cover"
               />
@@ -64,7 +69,7 @@ export function AboutSection() {
                   <Award className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="font-bold text-foreground">8+ Años</p>
+                  <p className="font-bold text-foreground">{artist.experience}+ Años</p>
                   <p className="text-sm text-muted-foreground">de Experiencia</p>
                 </div>
               </div>
@@ -82,7 +87,7 @@ export function AboutSection() {
                   <Heart className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <p className="font-bold text-foreground">500+</p>
+                  <p className="font-bold text-foreground">{artist.stats.tattoos}</p>
                   <p className="text-sm text-muted-foreground">Clientes Felices</p>
                 </div>
               </div>
@@ -101,25 +106,16 @@ export function AboutSection() {
             </div>
 
             <h3 className="font-serif text-3xl font-bold text-foreground mb-4">
-              Valentina Torres
+              {artist.name}
             </h3>
             
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              Desde que tengo memoria, el arte ha sido mi forma de expresión. Empecé mi 
-              camino en el mundo del tatuaje hace más de 8 años, y desde entonces cada 
-              pieza que creo es una extensión de mi alma y la historia de quien la lleva.
-            </p>
-            
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Mi especialidad abarca desde el fine line delicado hasta el blackwork más 
-              intenso, siempre buscando capturar la esencia única de cada cliente. Creo 
-              firmemente que un tatuaje no es solo tinta en la piel, es un fragmento de 
-              tu historia eternizado en arte.
+              {artist.fullBio}
             </p>
 
             {/* Specialties */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {["Fine Line", "Blackwork", "Realismo", "Minimalismo", "Geométrico"].map((spec) => (
+              {artist.styles.map((spec) => (
                 <span
                   key={spec}
                   className="px-3 py-1 rounded-full bg-secondary border border-border text-sm text-foreground"
@@ -133,12 +129,12 @@ export function AboutSection() {
             <div className="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl bg-secondary/50 border border-border">
               <div className="text-center">
                 <Clock className="w-5 h-5 text-primary mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">8+</p>
+                <p className="text-2xl font-bold text-foreground">{artist.experience}+</p>
                 <p className="text-xs text-muted-foreground">Años</p>
               </div>
               <div className="text-center border-x border-border">
                 <Heart className="w-5 h-5 text-primary mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">500+</p>
+                <p className="text-2xl font-bold text-foreground">{artist.stats.tattoos}</p>
                 <p className="text-xs text-muted-foreground">Tatuajes</p>
               </div>
               <div className="text-center">
@@ -153,9 +149,11 @@ export function AboutSection() {
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1">
                 Agendar Cita
               </Button>
-              <Button variant="outline" className="border-border flex items-center gap-2">
-                <Instagram className="w-4 h-4" />
-                @blackink_tattoo
+              <Button variant="outline" className="border-border flex items-center gap-2" asChild>
+                <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">
+                  <Instagram className="w-4 h-4" />
+                  {artist.instagram}
+                </a>
               </Button>
             </div>
           </motion.div>

@@ -6,13 +6,10 @@ import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { href: "#inicio", label: "Inicio" },
-  { href: "#galeria", label: "Galería" },
-  { href: "#disenos", label: "Diseños" },
-  { href: "#sobre-mi", label: "Sobre Mí" },
-  { href: "#agendar", label: "Agendar" },
-  { href: "#ubicacion", label: "Ubicación" },
+  { href: "/#inicio", label: "Inicio" },
+  { href: "/#artistas", label: "Artistas" },
 ]
+
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
