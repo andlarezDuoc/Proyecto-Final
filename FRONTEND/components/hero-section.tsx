@@ -1,11 +1,29 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react"
 import { ArrowDown, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
+const TATTOO_IMAGES = [
+  "/hero-images/media__1776795880811.jpg",
+  "/hero-images/media__1776795880835.jpg",
+  "/hero-images/media__1776795880920.jpg",
+  "/hero-images/media__1776795880946.jpg",
+  "/hero-images/media__1776795880965.jpg"
+];
+
 export function HeroSection() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % TATTOO_IMAGES.length);
+    }, 4500); // Cambia cada 4.5 segundos
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section
       id="inicio"
@@ -15,7 +33,7 @@ export function HeroSection() {
       <div className="absolute inset-0">
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background" />
-        
+
         {/* Large blurred decorative images for background effect */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-32 -left-32 w-[600px] h-[600px] opacity-40 blur-3xl">
@@ -36,19 +54,30 @@ export function HeroSection() {
             />
           </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-20 blur-3xl">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cQTxFwzoRR4qyBudaOmzUdQxGKmJx6.png"
-              alt=""
-              fill
-              className="object-cover"
-            />
+            <AnimatePresence>
+              <motion.div
+                key={currentImageIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.5 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={TATTOO_IMAGES[currentImageIndex]}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
         {/* Gradient overlays for depth */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-background/80" />
-        
+
         {/* Subtle animated glow effects */}
         <motion.div
           animate={{
@@ -77,7 +106,7 @@ export function HeroSection() {
       </div>
 
       {/* Grid pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
@@ -95,7 +124,7 @@ export function HeroSection() {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
@@ -105,16 +134,17 @@ export function HeroSection() {
               <span className="text-sm text-primary font-medium">Arte en tu piel</span>
             </motion.div>
 
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-              <span className="block text-foreground drop-shadow-lg">Black Ink</span>
+            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-8 drop-shadow-[0_10px_20px_rgba(0,0,0,1)]">
+              <span className="block bg-gradient-to-b from-white via-white/90 to-gray-400 bg-clip-text text-transparent pb-2">
+                Black Ink
+              </span>
               <span className="block bg-gradient-to-r from-primary via-accent to-chrome bg-clip-text text-transparent">
                 Tattoo
               </span>
-              <span className="block text-foreground drop-shadow-lg text-4xl sm:text-5xl lg:text-6xl mt-2">Network</span>
             </h1>
 
             <p className="text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed backdrop-blur-sm bg-background/30 rounded-xl p-4">
-              Encuentra a los mejores artistas del tatuaje en un solo lugar. Explora estilos, 
+              Encuentra a los mejores artistas del tatuaje en un solo lugar. Explora estilos,
               portafolios y agenda tu próxima obra de arte con confianza.
             </p>
 
@@ -160,46 +190,32 @@ export function HeroSection() {
             className="relative hidden lg:block"
           >
             <div className="relative w-full aspect-[3/4] max-w-md mx-auto">
-              {/* Main featured image - sharp */}
               <div className="absolute inset-0 rounded-2xl overflow-hidden border border-primary/20 bg-gradient-to-br from-secondary to-background shadow-2xl shadow-primary/10">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cQTxFwzoRR4qyBudaOmzUdQxGKmJx6.png"
-                  alt="Arte de tatuaje"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+                <AnimatePresence>
+                  <motion.div
+                    key={currentImageIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={TATTOO_IMAGES[currentImageIndex]}
+                      alt="Arte de tatuaje rotativo"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
-              
+
               {/* Decorative glowing frame */}
               <div className="absolute -inset-4 rounded-3xl border border-primary/30 shadow-lg shadow-primary/5" />
               <div className="absolute -inset-8 rounded-3xl border border-primary/10" />
-              
-              {/* Floating accent images - sharp */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-8 -left-8 w-32 h-40 rounded-xl overflow-hidden border border-primary/30 shadow-2xl"
-              >
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-SYxMtvIDe6Hp9Z9jyJOz1YgT6H8KdP.png"
-                  alt="Diseño de tatuaje"
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-              <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -right-4 w-24 h-32 rounded-xl overflow-hidden border border-accent/30 shadow-2xl"
-              >
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8AGQDsXZZKAl9YTRgeIwBAFxGPgraw.png"
-                  alt="Diseño de tatuaje"
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
+
+              {/* Floating images removed as requested */}
             </div>
           </motion.div>
         </div>

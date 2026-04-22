@@ -102,7 +102,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
             Diseños Disponibles de <span className="text-chrome">{artist.name.split(' ')[0]}</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Explora las hojas de diseños originales de {artist.name}. Elige tu favorito y agéndalo directamente 
+            Explora las hojas de diseños originales de {artist.name}. Elige tu favorito y agéndalo directamente
             o úsalo como inspiración para crear algo único.
           </p>
         </motion.div>
@@ -133,7 +133,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
                   />
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-                  
+
                   {/* Badge */}
                   <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-medium backdrop-blur-sm border border-white/20">
                     {sheet.designs}
@@ -147,7 +147,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
                   <p className="text-muted-foreground text-sm line-clamp-2">
                     {sheet.description}
                   </p>
-                  
+
                   <div className="mt-4 flex items-center text-chrome text-sm font-medium">
                     <span>Ver diseños</span>
                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -160,39 +160,12 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
           </AnimatePresence>
         </motion.div>
 
-        {/* Info banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-16 p-6 sm:p-8 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20">
-              <Sparkles className="w-8 h-8 text-chrome" />
-            </div>
-            <div className="flex-grow">
-              <h3 className="font-serif text-xl font-bold text-white mb-2">
-                ¿No encuentras lo que buscas?
-              </h3>
-              <p className="text-white/60">
-                Puedo crear un diseño personalizado basado en tus ideas. 
-                Agenda una consulta gratuita para discutir tu proyecto.
-              </p>
-            </div>
-            <Button 
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-6 whitespace-nowrap"
-              onClick={() => document.getElementById('agendar')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Consulta Gratis
-            </Button>
-          </div>
-        </motion.div>
+
       </div>
 
       {/* Design sheet detail modal */}
       <Dialog open={!!selectedSheet} onOpenChange={() => setSelectedSheet(null)}>
-        <DialogContent 
+        <DialogContent
           className="max-w-5xl bg-card border-border p-0 overflow-hidden max-h-[90vh]"
           aria-describedby="design-sheet-description"
         >
@@ -252,7 +225,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
                 </div>
 
                 <div className="mt-auto space-y-3">
-                  <Button 
+                  <Button
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6"
                     onClick={() => {
                       setSelectedSheet(null)

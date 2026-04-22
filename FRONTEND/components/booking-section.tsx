@@ -2,12 +2,14 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { 
-  ChevronLeft, 
-  ChevronRight, 
+import { useRouter } from "next/navigation"
+import {
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Check,
-  CreditCard
+  CreditCard,
+  AlertCircle
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,11 +22,10 @@ const timeSlots = [
 ]
 
 const services = [
-  { id: "consulta", name: "Consulta (Gratis)", duration: "30 min", price: 0 },
-  { id: "pequeño", name: "Tatuaje Pequeño", duration: "1-2 horas", price: 50000 },
-  { id: "mediano", name: "Tatuaje Mediano", duration: "2-4 horas", price: 100000 },
-  { id: "grande", name: "Tatuaje Grande", duration: "4+ horas", price: 150000 },
-  { id: "cover", name: "Cover Up", duration: "Variable", price: 80000 },
+  { id: "pequeño", name: "Tatuaje Pequeño", size: "Hasta 5 cm" },
+  { id: "mediano", name: "Tatuaje Mediano", size: "De 5 cm a 10 cm" },
+  { id: "grande", name: "Tatuaje Grande", size: "De 10 cm a 20 cm" },
+  { id: "cover", name: "Cover Up", size: "Tamaño a evaluar" },
 ]
 
 interface BookingSectionProps {
@@ -32,6 +33,15 @@ interface BookingSectionProps {
 }
 
 export function BookingSection({ artist }: BookingSectionProps) {
+  const router = useRouter()
+  const [userRole, setUserRole] = useState<string | null>(null)
+  
+  // Checking auth role defensively to ensure hydratation safety
+  if (typeof window !== 'undefined' && userRole === null) {
+    const role = localStorage.getItem('authRole')
+    if (role) setUserRole(role)
+  }
+
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
@@ -53,15 +63,15 @@ export function BookingSection({ artist }: BookingSectionProps) {
     const startingDay = firstDay.getDay()
 
     const days: (Date | null)[] = []
-    
+
     for (let i = 0; i < startingDay; i++) {
       days.push(null)
     }
-    
+
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(new Date(year, month, i))
     }
-    
+
     return days
   }
 
@@ -73,19 +83,24 @@ export function BookingSection({ artist }: BookingSectionProps) {
   }
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-CL', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString('es-CL', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     })
   }
 
   const selectedServiceData = services.find(s => s.id === selectedService)
-  const depositAmount = selectedServiceData ? Math.round(selectedServiceData.price * 0.3) : 0
 
   const handleNextStep = () => {
-    if (step < 4) setStep(step + 1)
+    if (step === 1) {
+      if (typeof window !== 'undefined' && localStorage.getItem('authRole') !== 'client') {
+        router.push('/login-client?redirect=' + encodeURIComponent(window.location.pathname))
+        return
+      }
+    }
+    if (step < 3) setStep(step + 1)
   }
 
   const handlePrevStep = () => {
@@ -98,18 +113,16 @@ export function BookingSection({ artist }: BookingSectionProps) {
         return selectedService
       case 2:
         return selectedDate && selectedTime
-      case 3:
-        return formData.name && formData.email && formData.phone
       default:
         return true
     }
   }
 
   return (
-    <section id="agendar" className="py-24 bg-background relative overflow-hidden">
+    <section id="agendar" className="py-24 relative overflow-hidden bg-transparent">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-3xl" />
-      
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -117,8 +130,8 @@ export function BookingSection({ artist }: BookingSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Agenda con <span className="text-primary">{artist.name.split(' ')[0]}</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+            Agenda con {artist.name.split(' ')[0]}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Reserva tu sesión online con {artist.name}. Confirma tu cita con un anticipo seguro.
@@ -127,21 +140,23 @@ export function BookingSection({ artist }: BookingSectionProps) {
 
         {/* Progress steps */}
         <div className="flex items-center justify-center mb-12">
-          {[1, 2, 3, 4].map((s) => (
+          {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                  step >= s
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                    : "bg-secondary text-muted-foreground"
+                className={`w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-500 border-2 ${
+                  step > s
+                    ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.6)] scale-105"
+                    : step === s
+                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_var(--primary)] scale-110"
+                    : "bg-black/40 text-white/40 border-white/20"
                 }`}
               >
-                {step > s ? <Check className="w-5 h-5" /> : s}
+                {step > s ? <Check className="w-7 h-7" /> : s}
               </div>
-              {s < 4 && (
+              {s < 3 && (
                 <div
-                  className={`w-16 sm:w-24 h-1 mx-2 transition-all rounded-full ${
-                    step > s ? "bg-primary" : "bg-secondary"
+                  className={`w-16 sm:w-24 h-1.5 mx-3 transition-all duration-500 rounded-full ${
+                    step > s ? "bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "bg-white/10"
                   }`}
                 />
               )}
@@ -149,7 +164,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
           ))}
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl">
           {/* Step 1: Select Service */}
           {step === 1 && (
             <motion.div
@@ -158,27 +173,28 @@ export function BookingSection({ artist }: BookingSectionProps) {
               className="space-y-8"
             >
               <div>
-                <h3 className="font-serif text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  Tipo de servicio
+                {!userRole && (
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm flex items-center justify-center gap-2 mb-6">
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    <span>Debes iniciar sesión como cliente para poder agendar una cita.</span>
+                  </div>
+                )}
+                <h3 className="font-serif text-2xl font-bold text-foreground mb-6 flex items-center justify-center gap-2 text-center">
+                  <span className="text-white mr-1 text-3xl">1.</span> Selecciona tu servicio
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {services.map((service) => (
                     <button
                       key={service.id}
                       onClick={() => setSelectedService(service.id)}
-                      className={`p-4 rounded-xl border text-left transition-all ${
-                        selectedService === service.id
-                          ? "border-primary bg-primary/10 shadow-lg shadow-primary/10"
-                          : "border-border hover:border-primary/50"
-                      }`}
+                      className={`p-4 rounded-xl border text-left transition-all duration-300 ${selectedService === service.id
+                          ? "border-primary bg-primary/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white"
+                          : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
+                        }`}
                     >
                       <p className="font-medium text-foreground">{service.name}</p>
                       <div className="flex justify-between items-center mt-1">
-                        <p className="text-sm text-muted-foreground">{service.duration}</p>
-                        <p className="text-sm text-primary font-medium">
-                          {service.price > 0 ? `$${service.price.toLocaleString('es-CL')}` : "Gratis"}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{service.size}</p>
                       </div>
                     </button>
                   ))}
@@ -194,6 +210,9 @@ export function BookingSection({ artist }: BookingSectionProps) {
               animate={{ opacity: 1, x: 0 }}
               className="space-y-8"
             >
+              <h3 className="font-serif text-2xl font-bold text-foreground mb-2 flex items-center justify-center gap-2 text-center">
+                <span className="text-white mr-1 text-3xl">2.</span> Selecciona una fecha
+              </h3>
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Calendar */}
                 <div>
@@ -231,15 +250,14 @@ export function BookingSection({ artist }: BookingSectionProps) {
                         key={index}
                         onClick={() => date && isDateAvailable(date) && setSelectedDate(date)}
                         disabled={!date || !isDateAvailable(date)}
-                        className={`aspect-square rounded-lg text-sm transition-all ${
-                          !date
+                        className={`aspect-square rounded-lg text-sm transition-all duration-300 ${!date
                             ? "invisible"
                             : !isDateAvailable(date)
-                            ? "text-muted-foreground/30 cursor-not-allowed"
-                            : selectedDate?.toDateString() === date.toDateString()
-                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                            : "hover:bg-secondary text-foreground"
-                        }`}
+                              ? "text-muted-foreground/30 cursor-not-allowed"
+                              : selectedDate?.toDateString() === date.toDateString()
+                                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                                : "bg-black/20 hover:bg-white/20 hover:scale-110 border border-transparent hover:border-white/40 text-foreground"
+                          }`}
                       >
                         {date?.getDate()}
                       </button>
@@ -258,11 +276,10 @@ export function BookingSection({ artist }: BookingSectionProps) {
                         <button
                           key={time}
                           onClick={() => setSelectedTime(time)}
-                          className={`p-3 rounded-lg border text-center transition-all ${
-                            selectedTime === time
-                              ? "border-primary bg-primary/10 text-primary shadow-lg shadow-primary/10"
-                              : "border-border hover:border-primary/50 text-foreground"
-                          }`}
+                          className={`p-3 rounded-lg border text-center transition-all duration-300 ${selectedTime === time
+                              ? "border-primary bg-primary/20 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                              : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
+                            }`}
                         >
                           {time}
                         </button>
@@ -285,77 +302,15 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </motion.div>
           )}
 
-          {/* Step 3: Personal Info */}
+          {/* Step 3: Confirmation */}
           {step === 3 && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6 max-w-xl mx-auto"
             >
-              <h3 className="font-serif text-xl font-bold text-foreground text-center mb-6">
-                Tus datos de contacto
-              </h3>
-
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Nombre completo</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Tu nombre"
-                    className="mt-1 bg-input border-border"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="tu@email.com"
-                    className="mt-1 bg-input border-border"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Teléfono</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+56 9 1234 5678"
-                    className="mt-1 bg-input border-border"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="description">Describe tu idea (opcional)</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Cuéntame sobre el tatuaje que deseas..."
-                    rows={4}
-                    className="mt-1 bg-input border-border resize-none"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 4: Payment */}
-          {step === 4 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-6 max-w-xl mx-auto"
-            >
-              <h3 className="font-serif text-xl font-bold text-foreground text-center mb-6">
-                Confirma tu reserva
+              <h3 className="font-serif text-2xl font-bold text-foreground mb-6 flex items-center justify-center gap-2 text-center">
+                <span className="text-white mr-1 text-3xl">3.</span> Confirma tu reserva
               </h3>
 
               {/* Booking summary */}
@@ -372,45 +327,21 @@ export function BookingSection({ artist }: BookingSectionProps) {
                     {selectedDate && formatDate(selectedDate)} - {selectedTime}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Cliente</span>
-                  <span className="text-foreground font-medium">{formData.name}</span>
-                </div>
-                <div className="border-t border-border pt-4 flex justify-between">
-                  <span className="text-muted-foreground">Precio total</span>
-                  <span className="text-foreground font-bold">
-                    ${selectedServiceData?.price.toLocaleString('es-CL')}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-primary font-medium">Anticipo (30%)</span>
-                  <span className="text-primary font-bold">
-                    ${depositAmount.toLocaleString('es-CL')}
-                  </span>
-                </div>
               </div>
 
-              {/* Payment button */}
+              {/* Booking confirmation action */}
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground text-center">
-                  El anticipo asegura tu reserva y será descontado del precio final.
+                  Al confirmar tu solicitud, el artista se pondrá en contacto contigo validando en tu cuenta de cliente.
                 </p>
-                
+
                 <Button
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-6 text-lg shadow-lg shadow-primary/25"
-                  onClick={() => alert('Integración con Transbank - Próximamente')}
+                  onClick={() => alert('Solicitud enviada con éxito')}
                 >
-                  <CreditCard className="w-5 h-5 mr-2" />
-                  Pagar anticipo con Transbank
+                  <Check className="w-5 h-5 mr-2" />
+                  Confirmar Solicitud
                 </Button>
-
-                <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                  <span>Pago seguro con</span>
-                  <div className="flex items-center gap-2">
-                    <div className="bg-foreground/10 rounded px-2 py-1">Webpay</div>
-                    <div className="bg-foreground/10 rounded px-2 py-1">Transbank</div>
-                  </div>
-                </div>
               </div>
             </motion.div>
           )}
@@ -427,7 +358,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
               Anterior
             </Button>
 
-            {step < 4 && (
+            {step < 3 && (
               <Button
                 onClick={handleNextStep}
                 disabled={!canProceed()}

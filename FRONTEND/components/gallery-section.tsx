@@ -120,8 +120,8 @@ export function GallerySection({ artist }: GallerySectionProps) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Portafolio de <span className="text-primary">{artist.name.split(' ')[0]}</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+            Portafolio de {artist.name.split(' ')[0]}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explora mi colección de trabajos realizados. Cada tatuaje es único y cuenta una historia.
@@ -136,11 +136,10 @@ export function GallerySection({ artist }: GallerySectionProps) {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm transition-all duration-300 border ${
-                  selectedCategory === category.id
-                    ? "bg-white/10 text-white border-white/30 backdrop-blur-md shadow-lg"
-                    : "bg-black/40 text-white/70 border-white/10 backdrop-blur-sm hover:bg-white/10 hover:text-white hover:border-white/20"
-                }`}
+                className={`px-4 py-2 rounded-full text-sm transition-all duration-300 border ${selectedCategory === category.id
+                  ? "bg-white/10 text-white border-white/30 backdrop-blur-md shadow-lg"
+                  : "bg-black/40 text-white/70 border-white/10 backdrop-blur-sm hover:bg-white/10 hover:text-white hover:border-white/20"
+                  }`}
               >
                 {category.label}
               </button>
@@ -198,7 +197,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
 
       {/* Tattoo detail modal */}
       <Dialog open={!!selectedTattoo} onOpenChange={() => setSelectedTattoo(null)}>
-        <DialogContent 
+        <DialogContent
           className="max-w-4xl bg-card border-border p-0 overflow-hidden"
           aria-describedby="tattoo-description"
         >
@@ -245,7 +244,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
                 </p>
 
                 <div className="flex gap-3 mt-6">
-                  <Button 
+                  <Button
                     className="flex-1 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm"
                     onClick={() => {
                       setSelectedTattoo(null)

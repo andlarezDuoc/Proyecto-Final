@@ -155,9 +155,9 @@ export function WhatsAppChat() {
     // Simulate bot response delay
     setTimeout(() => {
       setIsTyping(false)
-      
+
       const response = botResponses[text]
-      
+
       if (response?.followUp === "whatsapp") {
         // Open WhatsApp with pre-filled message
         const whatsappMessage = encodeURIComponent(
@@ -225,11 +225,10 @@ export function WhatsAppChat() {
                   className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                      message.sender === "user"
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${message.sender === "user"
                         ? "bg-primary text-primary-foreground rounded-br-sm"
                         : "bg-card border border-border text-foreground rounded-bl-sm"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start gap-2">
                       {message.sender === "bot" && (

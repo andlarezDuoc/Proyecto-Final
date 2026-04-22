@@ -20,19 +20,19 @@ export function MarketplaceSection() {
   const [selectedLocation, setSelectedLocation] = useState<string>("all")
 
   const allStyles: ArtistStyle[] = [
-    "Realismo", "Blackwork", "Fine Line", "Tradicional", 
+    "Realismo", "Blackwork", "Fine Line", "Tradicional",
     "Neotradicional", "Minimalismo", "Geométrico", "Anime", "Acuarela"
   ]
 
   const allLocations: Location[] = [
-    "Santiago Centro", "Providencia", "Las Condes", "Ñuñoa", 
+    "Santiago Centro", "Providencia", "Las Condes", "Ñuñoa",
     "Vitacura", "Macul", "La Florida"
   ]
 
   const filteredArtists = useMemo(() => {
     return artists.filter((artist) => {
-      const matchesSearch = artist.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            artist.shortBio.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        artist.shortBio.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStyle = selectedStyle === "all" || artist.styles.includes(selectedStyle as ArtistStyle);
       const matchesLocation = selectedLocation === "all" || artist.location === selectedLocation;
 
@@ -49,8 +49,8 @@ export function MarketplaceSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Nuestros <span className="text-primary">Artistas</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+            Nuestros Artistas
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explora nuestra red de talentos y encuentra al artista perfecto para tu próximo tatuaje.

@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen">
       {/* Fixed blurred background */}
-      <div 
+      <div
         className="fixed inset-0 z-0"
         style={{
           backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xlVV5yj2kwTMUqKixoOEJCTUmTIRy4.png')`,
@@ -21,7 +21,7 @@ export default function HomePage() {
       />
       {/* Dark overlay for readability */}
       <div className="fixed inset-0 z-0 bg-black/60" />
-      
+
       {/* Main content */}
       <main className="relative z-10 min-h-screen">
         <Navigation />

@@ -30,8 +30,8 @@ export function AboutSection({ artist }: AboutSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Sobre <span className="text-primary">Mí</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+            Sobre Mí
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Conoce a la artista detrás de cada obra.
@@ -55,7 +55,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
             </div>
-            
+
             {/* Floating stats cards */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -74,7 +74,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
                 </div>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +108,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
             <h3 className="font-serif text-3xl font-bold text-foreground mb-4">
               {artist.name}
             </h3>
-            
+
             <p className="text-muted-foreground leading-relaxed mb-8">
               {artist.fullBio}
             </p>

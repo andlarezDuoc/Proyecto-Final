@@ -3,11 +3,53 @@
 import { motion } from "framer-motion"
 import { MapPin, Clock, Phone, Mail, Navigation } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Artist } from "@/lib/data/artists"
 
-export function LocationSection() {
-  const studioAddress = "Av. Providencia 1234, Providencia, Santiago"
+interface LocationSectionProps {
+  artist?: Artist;
+}
+
+const FAKE_LOCATIONS = [
+  {
+    address: "Av. Providencia 1234, Providencia, Santiago",
+    phone: "+56 9 1234 5678",
+    email: "providencia@inkstudio.cl"
+  },
+  {
+    address: "Av. Apoquindo 3000, Las Condes, Santiago",
+    phone: "+56 9 8765 4321",
+    email: "lascondes@inkstudio.cl"
+  },
+  {
+    address: "Irarrázaval 1500, Ñuñoa, Santiago",
+    phone: "+56 9 5555 4444",
+    email: "nunoa@inkstudio.cl"
+  },
+  {
+    address: "Alonso de Córdova 4050, Vitacura, Santiago",
+    phone: "+56 9 9999 8888",
+    email: "vitacura@inkstudio.cl"
+  },
+  {
+    address: "Merced 820, Santiago Centro, Santiago",
+    phone: "+56 9 3333 2222",
+    email: "centro@inkstudio.cl"
+  }
+]
+
+export function LocationSection({ artist }: LocationSectionProps = {}) {
+  let locationData = FAKE_LOCATIONS[0]
+  
+  if (artist) {
+    // Escogemos una dirección basada determinísticamente en el ID del artista
+    const nameSum = artist.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+    const index = nameSum % FAKE_LOCATIONS.length
+    locationData = FAKE_LOCATIONS[index]
+  }
+
+  const studioAddress = locationData.address
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(studioAddress)}`
-  const googleMapsEmbedUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.9534895285!2d-70.61003908479934!3d-33.42628078077556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662cf6a8e1f3a9d%3A0x8c7b3b2f9c3a7e7a!2sAv.%20Providencia%2C%20Providencia%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses!2scl!4v1699999999999!5m2!1ses!2scl`
+  const googleMapsEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(studioAddress)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
 
   const contactInfo = [
     {
@@ -25,14 +67,14 @@ export function LocationSection() {
     {
       icon: Phone,
       label: "Teléfono",
-      value: "+56 9 1234 5678",
-      action: "tel:+56912345678",
+      value: locationData.phone,
+      action: `tel:${locationData.phone.replace(/\s+/g, '')}`,
     },
     {
       icon: Mail,
       label: "Email",
-      value: "contacto@inkstudio.cl",
-      action: "mailto:contacto@inkstudio.cl",
+      value: locationData.email,
+      action: `mailto:${locationData.email}`,
     },
   ]
 
@@ -94,7 +136,7 @@ export function LocationSection() {
           >
             <div className="bg-card rounded-2xl border border-border p-8">
               <h3 className="font-serif text-2xl font-bold text-foreground mb-6">
-                INK Studio
+                {artist ? `Estudio de ${artist.name}` : "INK Studio"}
               </h3>
               
               <div className="space-y-6">
