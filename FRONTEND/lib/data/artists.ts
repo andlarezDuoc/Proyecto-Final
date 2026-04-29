@@ -54,9 +54,14 @@ export const artists: Artist[] = [
     fullBio: "Con más de 5 años de experiencia, me especializo en los estilos Tradicional y Neotradicional. Me encantan los colores saturados, las líneas audaces y los diseños clásicos reinventados.",
     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1590246814883-57832efa6a73?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800&auto=format&fit=crop"
+      "/camila-rojas/1.png",
+      "/camila-rojas/2.png",
+      "/camila-rojas/3.png",
+      "/camila-rojas/4.png",
+      "/camila-rojas/5.png",
+      "/camila-rojas/6.png",
+      "/camila-rojas/7.png",
+      "/camila-rojas/8.png"
     ],
     experience: 5,
     stats: {
@@ -74,9 +79,14 @@ export const artists: Artist[] = [
     fullBio: "Soy un artista apasionado por el manga, anime y los colores llamativos. Mi técnica mezcla la precisión de los mangas con la soltura y belleza de la técnica de acuarela.",
     avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1542458428-ecdcabb8db54?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1647464278453-912c2ca7d75c?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800&auto=format&fit=crop"
+      "/daniel-herrera/1.png",
+      "/daniel-herrera/2.png",
+      "/daniel-herrera/3.png",
+      "/daniel-herrera/4.png",
+      "/daniel-herrera/5.png",
+      "/daniel-herrera/6.png",
+      "/daniel-herrera/7.png",
+      "/daniel-herrera/8.png"
     ],
     experience: 4,
     stats: {
@@ -94,9 +104,14 @@ export const artists: Artist[] = [
     fullBio: "Mi enfoque es 100% geométrico. Trabajo la precisión, los patrones repetitivos y mandalas, logrando estructuras sólidas y simétricas sobre el cuerpo.",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1598371839696-5e5bb00b059e?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1634149842468-b7c1265913af?q=80&w=800&auto=format&fit=crop"
+      "/sofia-mendez/1.jpg",
+      "/sofia-mendez/2.jpg",
+      "/sofia-mendez/3.jpg",
+      "/sofia-mendez/4.jpg",
+      "/sofia-mendez/5.jpg",
+      "/sofia-mendez/6.jpg",
+      "/sofia-mendez/7.jpg",
+      "/sofia-mendez/8.jpg"
     ],
     experience: 7,
     stats: {
@@ -114,8 +129,14 @@ export const artists: Artist[] = [
     fullBio: "Llevo el estilo Neotradicional a otro nivel con piezas grandes, espaldas completas y mangas enteras. 10 años en el rubro avalan mis trazos.",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1590246814883-57832efa6a73?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1574516757650-6a75f8f537db?q=80&w=800&auto=format&fit=crop"
+      "/jorge-valdes/1.png",
+      "/jorge-valdes/2.png",
+      "/jorge-valdes/3.png",
+      "/jorge-valdes/4.png",
+      "/jorge-valdes/5.png",
+      "/jorge-valdes/6.png",
+      "/jorge-valdes/7.png",
+      "/jorge-valdes/8.png"
     ],
     experience: 10,
     stats: {
@@ -133,8 +154,14 @@ export const artists: Artist[] = [
     fullBio: "Me encantan los detalles y los trazos tan finos como un cabello. Ofrezco un espacio seguro y cálido para tener tu primer tatuaje minimalista.",
     avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1611501271465-0ae099bceb68?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1542458428-ecdcabb8db54?q=80&w=800&auto=format&fit=crop"
+      "/andrea-pinto/1.png",
+      "/andrea-pinto/2.png",
+      "/andrea-pinto/3.png",
+      "/andrea-pinto/4.png",
+      "/andrea-pinto/5.png",
+      "/andrea-pinto/6.png",
+      "/andrea-pinto/7.png",
+      "/andrea-pinto/8.png"
     ],
     experience: 3,
     stats: {
@@ -152,8 +179,14 @@ export const artists: Artist[] = [
     fullBio: "Integro el estilo Anime y el Blackwork para crear piezas oscuras y llenas de sentimiento de tus personajes favoritos. Mucho contraste y sombras densas.",
     avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1598371839696-5e5bb00b059e?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1634149842468-b7c1265913af?q=80&w=800&auto=format&fit=crop"
+      "/felipe-cortes/1.png",
+      "/felipe-cortes/2.png",
+      "/felipe-cortes/3.png",
+      "/felipe-cortes/4.png",
+      "/felipe-cortes/5.png",
+      "/felipe-cortes/6.png",
+      "/felipe-cortes/7.png",
+      "/felipe-cortes/8.png"
     ],
     experience: 6,
     stats: {
@@ -171,8 +204,14 @@ export const artists: Artist[] = [
     fullBio: "Especialista en retratos de animales y personas. Cada obra requiere entre 6 a 10 horas de trabajo para lograr un nivel de detalle fotográfico inigualable.",
     avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1574516757650-6a75f8f537db?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?q=80&w=800&auto=format&fit=crop"
+      "/ignacio-vega/1.png",
+      "/ignacio-vega/2.png",
+      "/ignacio-vega/3.png",
+      "/ignacio-vega/4.png",
+      "/ignacio-vega/5.png",
+      "/ignacio-vega/6.png",
+      "/ignacio-vega/7.png",
+      "/ignacio-vega/8.png"
     ],
     experience: 9,
     stats: {
@@ -190,9 +229,14 @@ export const artists: Artist[] = [
     fullBio: "Diseño piezas con inspiración tradicional americana pero adaptadas al gusto actual, utilizando muchísima tinta negra, delineados gruesos y duraderos.",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop",
     portfolio: [
-      "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1590246814883-57832efa6a73?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1542458428-ecdcabb8db54?q=80&w=800&auto=format&fit=crop"
+      "/catalina-ruiz/1.png",
+      "/catalina-ruiz/2.png",
+      "/catalina-ruiz/3.png",
+      "/catalina-ruiz/4.png",
+      "/catalina-ruiz/5.png",
+      "/catalina-ruiz/6.png",
+      "/catalina-ruiz/7.png",
+      "/catalina-ruiz/8.png"
     ],
     experience: 5,
     stats: {
@@ -209,7 +253,16 @@ export const artists: Artist[] = [
     shortBio: "Mandales y geometrías sagradas con puntos.",
     fullBio: "Especialista en Dotwork y geometría sagrada. Diseños que combinan precisión matemática con arte espiritual.",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop",
-    portfolio: ["https://images.unsplash.com/photo-1598371839696-5e5bb00b059e?w=800", "https://images.unsplash.com/photo-1611501271465-0ae099bceb68?w=800"],
+    portfolio: [
+      "/lucas-maldonado/1.png",
+      "/lucas-maldonado/2.jpg",
+      "/lucas-maldonado/3.jpg",
+      "/lucas-maldonado/4.jpg",
+      "/lucas-maldonado/5.jpg",
+      "/lucas-maldonado/6.jpg",
+      "/lucas-maldonado/7.jpg",
+      "/lucas-maldonado/8.jpg"
+    ],
     experience: 6,
     stats: { tattoos: "320+", rating: "4.8" },
     instagram: "@lucas.geo"
@@ -222,7 +275,16 @@ export const artists: Artist[] = [
     shortBio: "Manchas de acuarela y líneas poéticas.",
     fullBio: "Me encanta dar vida a la piel con colores fluidos y tatuajes que parecen pinturas al agua.",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop",
-    portfolio: ["https://images.unsplash.com/photo-1542458428-ecdcabb8db54?w=800"],
+    portfolio: [
+      "/valeria-castro/1.jpg",
+      "/valeria-castro/2.jpg",
+      "/valeria-castro/3.jpg",
+      "/valeria-castro/4.jpg",
+      "/valeria-castro/5.jpg",
+      "/valeria-castro/6.jpg",
+      "/valeria-castro/7.jpg",
+      "/valeria-castro/8.jpg"
+    ],
     experience: 4,
     stats: { tattoos: "180+", rating: "4.9" },
     instagram: "@vale.watercolor"
@@ -281,7 +343,7 @@ export const artists: Artist[] = [
   },
   {
     id: "nicolas-carrasco",
-    name: "Nicolás Carrasco",
+    name: "Nicol Carrasco",
     styles: ["Blackwork", "Fine Line"],
     location: "Macul",
     shortBio: "Fauna y flora en negro intenso.",
@@ -317,18 +379,5 @@ export const artists: Artist[] = [
     experience: 11,
     stats: { tattoos: "900+", rating: "4.9" },
     instagram: "@rod.geekink"
-  },
-  {
-    id: "camila-espinoza",
-    name: "Camila Espinoza",
-    styles: ["Acuarela", "Realismo"],
-    location: "Vitacura",
-    shortBio: "Color y vida en perfecto equilibrio.",
-    fullBio: "Si estás buscando un tatuaje gigante que mezcle bases de realismo y fondos acuarelables deslumbrantes, soy tu artista.",
-    avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=600&auto=format&fit=crop&crop=faces&q=80",
-    portfolio: ["https://images.unsplash.com/photo-1542458428-ecdcabb8db54?w=800"],
-    experience: 14,
-    stats: { tattoos: "1500+", rating: "5.0" },
-    instagram: "@cami.color"
   }
 ];

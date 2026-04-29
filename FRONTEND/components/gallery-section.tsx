@@ -100,7 +100,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
     id: i + 1,
     image: imgUrl,
     title: `Obra ${i + 1}`,
-    category: "fineline", // Default to fineline as we are not distinguishing in the mock
+    category: "", // Remove default category so it doesn't show incorrect text
     description: `Diseño personalizado de tatuaje realizado por ${artist.name}.`,
     likes: Math.floor(Math.random() * 500) + 100,
   }));

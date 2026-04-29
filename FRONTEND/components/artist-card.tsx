@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Star, Sparkles } from "lucide-react"
+import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Artist } from "@/lib/data/artists"
 
@@ -13,72 +13,87 @@ interface ArtistCardProps {
 }
 
 export function ArtistCard({ artist, index }: ArtistCardProps) {
+  // Use the first portfolio image as cover, fallback to avatar if none exists
+  const coverImage = artist.portfolio && artist.portfolio.length > 0 ? artist.portfolio[0] : artist.avatar;
+
+  // Mock distance for the UI to match the requested design (deterministic)
+  const mockDistance = ((artist.name.length % 8) + 1.2).toFixed(1);
+  
+  // Mock review count (deterministic)
+  const mockReviews = (artist.name.length * 11) % 150 + 30;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative rounded-2xl overflow-hidden bg-background/50 border border-primary/20 backdrop-blur-sm shadow-xl hover:shadow-primary/20 hover:border-primary/50 transition-all duration-300"
+      className="group flex flex-col bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:border-primary/50 transition-all duration-300"
     >
-      <Link href={`/artist/${artist.id}`} className="block relative w-full h-full">
-        {/* Background glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/60 to-transparent z-10" />
-
-        {/* Artist Avatar as main background image */}
-        <div className="relative aspect-[3/4] w-full">
+      {/* Cover Image */}
+      <div className="relative h-48 w-full bg-muted">
+        <Image
+          src={coverImage}
+          alt={`Portada de ${artist.name}`}
+          fill
+          className="object-cover"
+        />
+        {/* Avatar overlapping */}
+        <div className="absolute -bottom-6 left-6 rounded-full border-4 border-[#121212] overflow-hidden w-14 h-14 bg-muted z-10">
           <Image
             src={artist.avatar}
             alt={artist.name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-cover"
           />
         </div>
+      </div>
 
-        {/* Content overlay */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-end p-6">
-          <div className="transform transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-serif text-2xl font-bold text-foreground">
-                {artist.name}
-              </h3>
-              <div className="flex items-center gap-1 bg-background/50 backdrop-blur-md px-2 py-1 rounded-full text-sm">
-                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                <span className="font-medium text-foreground">{artist.stats.rating}</span>
-              </div>
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-6 pt-10">
+        <div className="flex justify-between items-start mb-1">
+          <h3 className="font-serif text-xl font-bold text-foreground">
+            {artist.name}
+          </h3>
+          <div className="flex flex-col items-end">
+            <div className="flex items-center gap-1 text-sm font-bold text-foreground">
+              <span>{artist.stats.rating}</span>
+              <Star className="w-4 h-4 text-white fill-white" />
             </div>
-
-            <div className="flex items-center gap-2 text-muted-foreground mb-3 text-sm">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span>{artist.location}</span>
-            </div>
-
-            {/* Styles tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {artist.styles.slice(0, 3).map((style) => (
-                <span
-                  key={style}
-                  className="text-xs px-2 py-1 bg-secondary/80 text-foreground rounded-md border border-border backdrop-blur-sm"
-                >
-                  {style}
-                </span>
-              ))}
-              {artist.styles.length > 3 && (
-                <span className="text-xs px-2 py-1 bg-secondary/80 text-foreground rounded-md border border-border backdrop-blur-sm">
-                  +{artist.styles.length - 3}
-                </span>
-              )}
-            </div>
-
-            <p className="text-sm text-foreground/80 mb-6 line-clamp-2">
-              {artist.shortBio}
-            </p>
-
-            <span className="w-full bg-primary text-primary-foreground font-medium shadow-lg transition-colors duration-300 py-2.5 rounded-md flex items-center justify-center hover:bg-white hover:text-black">
-              Ver Perfil
-            </span>
+            <span className="text-[11px] text-muted-foreground">{mockReviews} reseñas</span>
           </div>
         </div>
-      </Link>
+
+        <div className="text-xs text-muted-foreground mb-4">
+          <span>{artist.location} • {mockDistance} km</span>
+        </div>
+
+        {/* Styles tags */}
+        <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
+          {artist.styles.slice(0, 2).map((style, i) => (
+            <span
+              key={style}
+              className="text-xs font-semibold text-white"
+            >
+              {style}
+            </span>
+          ))}
+        </div>
+
+        <p className="text-sm text-foreground/70 mb-6 flex-1 line-clamp-3">
+          {artist.shortBio} {artist.fullBio && artist.fullBio !== artist.shortBio ? artist.fullBio : ''}
+        </p>
+
+        <div className="flex gap-3 mt-auto">
+          <Link href={`/artist/${artist.id}`} className="flex-1">
+            <Button className="w-full bg-white/10 hover:bg-white/20 text-white border-none rounded-md h-10 font-medium">
+              Ver perfil
+            </Button>
+          </Link>
+          <Button variant="ghost" className="flex-1 hover:bg-white/5 text-white rounded-md h-10 font-medium">
+            Reservar
+          </Button>
+        </div>
+      </div>
     </motion.div>
   )
 }

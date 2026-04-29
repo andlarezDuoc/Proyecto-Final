@@ -5,6 +5,7 @@ import { BookingSection } from "@/components/booking-section"
 import { LocationSection } from "@/components/location-section"
 import { WhatsAppChat } from "@/components/whatsapp-chat"
 import { ClientUploadPhoto } from "@/components/client-upload-photo"
+import { ReviewsSection } from "@/components/reviews-section"
 import { Footer } from "@/components/footer"
 import { artists } from "@/lib/data/artists"
 import { notFound } from "next/navigation"
@@ -40,6 +41,7 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
 
         <GallerySection artist={artist} />
         <BookingSection artist={artist} />
+        <ReviewsSection artistId={artist.id} artistName={artist.name} />
         <LocationSection artist={artist} />
         <Footer />
         <WhatsAppChat />
