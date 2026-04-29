@@ -1,0 +1,14 @@
+-- 1. Crear el disco duro (bucket) para el portafolio
+insert into storage.buckets (id, name, public) 
+values ('portfolio', 'portfolio', true)
+on conflict (id) do nothing;
+
+-- 2. Permitir que cualquier persona del mundo pueda VER las fotos
+create policy "Public Access" 
+on storage.objects for select 
+using ( bucket_id = 'portfolio' );
+
+-- 3. Permitir que solo usuarios logueados (los tatuadores) puedan SUBIR fotos
+create policy "Auth Upload" 
+on storage.objects for insert 
+with check ( bucket_id = 'portfolio' and auth.role() = 'authenticated' );

@@ -1,0 +1,13 @@
+CREATE TABLE public.artists (
+    id text primary key,
+    name text not null,
+    styles text[] not null,
+    location text not null,
+    shortBio text not null,
+    fullBio text not null,
+    avatar text not null,
+    portfolio text[] not null,
+    experience integer not null,
+    stats jsonb not null,
+    instagram text not null
+);
