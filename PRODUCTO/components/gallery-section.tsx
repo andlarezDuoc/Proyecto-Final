@@ -102,7 +102,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
     title: `Obra ${i + 1}`,
     category: "", // Remove default category so it doesn't show incorrect text
     description: `Diseño personalizado de tatuaje realizado por ${artist.name}.`,
-    likes: Math.floor(Math.random() * 500) + 100,
+    likes: ((i * 37) % 400) + 150, // Deterministic likes to prevent hydration errors
   }));
 
   const filteredTattoos = dynamictattoos.filter((tattoo) => {

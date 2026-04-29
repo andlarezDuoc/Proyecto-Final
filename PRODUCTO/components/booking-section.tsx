@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import {
   ChevronLeft,
   ChevronRight,
@@ -35,12 +36,16 @@ interface BookingSectionProps {
 export function BookingSection({ artist }: BookingSectionProps) {
   const router = useRouter()
   const [userRole, setUserRole] = useState<string | null>(null)
-  
-  // Checking auth role defensively to ensure hydratation safety
-  if (typeof window !== 'undefined' && userRole === null) {
-    const role = localStorage.getItem('authRole')
-    if (role) setUserRole(role)
-  }
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user?.user_metadata?.role) {
+        setUserRole(session.user.user_metadata.role)
+      }
+    }
+    checkSession()
+  }, [])
 
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -95,7 +100,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
 
   const handleNextStep = () => {
     if (step === 1) {
-      if (typeof window !== 'undefined' && localStorage.getItem('authRole') !== 'client') {
+      if (typeof window !== 'undefined' && userRole !== 'client') {
         router.push('/login-client?redirect=' + encodeURIComponent(window.location.pathname))
         return
       }
@@ -143,21 +148,19 @@ export function BookingSection({ artist }: BookingSectionProps) {
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center">
               <div
-                className={`w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-500 border-2 ${
-                  step > s
+                className={`w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-500 border-2 ${step > s
                     ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.6)] scale-105"
                     : step === s
-                    ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_var(--primary)] scale-110"
-                    : "bg-black/40 text-white/40 border-white/20"
-                }`}
+                      ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_var(--primary)] scale-110"
+                      : "bg-black/40 text-white/40 border-white/20"
+                  }`}
               >
                 {step > s ? <Check className="w-7 h-7" /> : s}
               </div>
               {s < 3 && (
                 <div
-                  className={`w-16 sm:w-24 h-1.5 mx-3 transition-all duration-500 rounded-full ${
-                    step > s ? "bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "bg-white/10"
-                  }`}
+                  className={`w-16 sm:w-24 h-1.5 mx-3 transition-all duration-500 rounded-full ${step > s ? "bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "bg-white/10"
+                    }`}
                 />
               )}
             </div>
@@ -188,8 +191,8 @@ export function BookingSection({ artist }: BookingSectionProps) {
                       key={service.id}
                       onClick={() => setSelectedService(service.id)}
                       className={`p-4 rounded-xl border text-left transition-all duration-300 ${selectedService === service.id
-                          ? "border-primary bg-primary/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white"
-                          : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
+                        ? "border-primary bg-primary/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white"
+                        : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
                         }`}
                     >
                       <p className="font-medium text-foreground">{service.name}</p>
@@ -251,12 +254,12 @@ export function BookingSection({ artist }: BookingSectionProps) {
                         onClick={() => date && isDateAvailable(date) && setSelectedDate(date)}
                         disabled={!date || !isDateAvailable(date)}
                         className={`aspect-square rounded-lg text-sm transition-all duration-300 ${!date
-                            ? "invisible"
-                            : !isDateAvailable(date)
-                              ? "text-muted-foreground/30 cursor-not-allowed"
-                              : selectedDate?.toDateString() === date.toDateString()
-                                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                                : "bg-black/20 hover:bg-white/20 hover:scale-110 border border-transparent hover:border-white/40 text-foreground"
+                          ? "invisible"
+                          : !isDateAvailable(date)
+                            ? "text-muted-foreground/30 cursor-not-allowed"
+                            : selectedDate?.toDateString() === date.toDateString()
+                              ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                              : "bg-black/20 hover:bg-white/20 hover:scale-110 border border-transparent hover:border-white/40 text-foreground"
                           }`}
                       >
                         {date?.getDate()}
@@ -277,8 +280,8 @@ export function BookingSection({ artist }: BookingSectionProps) {
                           key={time}
                           onClick={() => setSelectedTime(time)}
                           className={`p-3 rounded-lg border text-center transition-all duration-300 ${selectedTime === time
-                              ? "border-primary bg-primary/20 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-                              : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
+                            ? "border-primary bg-primary/20 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                            : "border-white/10 bg-black/20 hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] text-foreground/80 hover:text-white"
                             }`}
                         >
                           {time}

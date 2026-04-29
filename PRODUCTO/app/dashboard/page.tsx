@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Upload, Trash2, Plus, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { artists } from "@/lib/data/artists"
+import { Artist } from "@/lib/data/artists"
+import { supabase } from "@/lib/supabase"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,11 +22,25 @@ import {
 export default function DashboardPage() {
   // Simularemos que el usuario logueado es siempre Marcos Silva para esta Demo
   const MOCK_USER_ID = "marcos-silva"
-  const defaultArtistData = artists.find(a => a.id === MOCK_USER_ID)
+  const [defaultArtistData, setDefaultArtistData] = useState<Artist | null>(null)
   
   // Local state for the gallery to demonstrate CRUD operations visually
   const [gallery, setGallery] = useState<string[]>([])
   const [isReady, setIsReady] = useState(false)
+  
+  useEffect(() => {
+    async function fetchUser() {
+      const { data } = await supabase.from('artists').select('*').eq('id', MOCK_USER_ID).single()
+      if (data) {
+        setDefaultArtistData({
+          ...data,
+          shortBio: data.shortbio,
+          fullBio: data.fullbio
+        } as Artist)
+      }
+    }
+    fetchUser()
+  }, [])
   
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -36,25 +51,65 @@ export default function DashboardPage() {
     }
   }, [defaultArtistData])
 
-  const handleDelete = (indexToDelete: number) => {
-    setGallery(prev => prev.filter((_, i) => i !== indexToDelete))
+  const handleDelete = async (indexToDelete: number) => {
+    if (!defaultArtistData) return
+    const updatedPortfolio = gallery.filter((_, i) => i !== indexToDelete)
+    
+    try {
+      const { error } = await supabase
+        .from('artists')
+        .update({ portfolio: updatedPortfolio })
+        .eq('id', MOCK_USER_ID)
+      
+      if (error) throw error
+      setGallery(updatedPortfolio)
+    } catch (err: any) {
+      console.error('Error al eliminar:', err.message)
+      alert('Error al eliminar la imagen de la base de datos.')
+    }
   }
 
   const handleUploadClick = () => {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) {
-      // Creamos una URL temporal local para la visualización del archivo
-      const newImageUrl = URL.createObjectURL(file)
-      setGallery(prev => [newImageUrl, ...prev])
-      
-      // Limpiamos el input para que permita subir el mismo archivo otra vez si se deseara
+    if (!file || !defaultArtistData) return
+
+    try {
+      // 1. Upload to Supabase Storage
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${MOCK_USER_ID}-${Date.now()}.${fileExt}`
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('portfolio')
+        .upload(fileName, file)
+
+      if (uploadError) throw uploadError
+
+      // 2. Get Public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio')
+        .getPublicUrl(fileName)
+
+      // 3. Update artist record in database
+      const updatedPortfolio = [publicUrl, ...gallery]
+      const { error: updateError } = await supabase
+        .from('artists')
+        .update({ portfolio: updatedPortfolio })
+        .eq('id', MOCK_USER_ID)
+
+      if (updateError) throw updateError
+
+      // 4. Update local state
+      setGallery(updatedPortfolio)
+
       if (fileInputRef.current) {
         fileInputRef.current.value = ""
       }
+    } catch (err: any) {
+      console.error('Error uploading image:', err.message)
+      alert('Error al subir la imagen. ¿Creaste el bucket "portfolio" en Supabase?')
     }
   }
 

@@ -2,11 +2,18 @@
 
 import { ReactNode } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Droplet, Image as ImageIcon, Settings, LogOut, ArrowUpRight, Inbox } from "lucide-react"
+import { supabase } from "@/lib/supabase"
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
 
   const navItems = [
     { name: "Portafolio", href: "/dashboard", icon: ImageIcon },
@@ -58,13 +65,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <ArrowUpRight className="w-5 h-5" />
             Perfil Público
           </Link>
-          <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
           >
             <LogOut className="w-5 h-5" />
             Cerrar Sesión
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -86,13 +93,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <ArrowUpRight className="w-4 h-4" />
             Ver Perfil
           </Link>
-          <Link
-            href="/"
+          <button
+            onClick={handleLogout}
             className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 text-red-400 text-sm"
           >
             <LogOut className="w-4 h-4" />
             Salir
-          </Link>
+          </button>
       </div>
     </div>
   )

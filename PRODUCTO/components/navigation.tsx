@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { supabase } from "@/lib/supabase"
 import { Menu, X, ChevronDown, User, PenTool, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,22 +17,39 @@ const navItems = [
   { href: "/#artistas", label: "Artistas" },
 ]
 
-
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [userRole, setUserRole] = useState<string | null>(null)
 
   useEffect(() => {
-    // Check if user is logged in (client side only)
-    const role = localStorage.getItem('authRole')
-    if (role) setUserRole(role)
+    // Check if user is logged in using Supabase
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user?.user_metadata?.role) {
+        setUserRole(session.user.user_metadata.role)
+      }
+    }
+    
+    checkSession()
+
+    // Listen for auth changes (login/logout)
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user?.user_metadata?.role) {
+        setUserRole(session.user.user_metadata.role)
+      } else {
+        setUserRole(null)
+      }
+    })
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
     }
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      authListener.subscription.unsubscribe()
+    }
   }, [])
 
   return (
@@ -66,8 +84,8 @@ export function Navigation() {
 
             {userRole ? (
               <button 
-                onClick={() => {
-                  localStorage.removeItem('authRole')
+                onClick={async () => {
+                  await supabase.auth.signOut()
                   setUserRole(null)
                   window.location.reload()
                 }}
@@ -125,8 +143,8 @@ export function Navigation() {
 
           {userRole ? (
             <button 
-              onClick={() => {
-                localStorage.removeItem('authRole')
+              onClick={async () => {
+                await supabase.auth.signOut()
                 setUserRole(null)
                 setIsOpen(false)
                 window.location.reload()

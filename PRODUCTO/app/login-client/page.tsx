@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { supabase } from "@/lib/supabase"
 
 export default function ClientLoginPage() {
   const [email, setEmail] = useState("")
@@ -15,24 +16,43 @@ export default function ClientLoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulando inicio de sesión temporal
-    setTimeout(() => {
-      setIsLoading(false)
-      // Guardamos la sesión como CLIENTE
-      localStorage.setItem('authRole', 'client')
+    try {
+      // Intentamos iniciar sesión
+      let { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      // Si el usuario no existe, lo registramos automáticamente (solo para desarrollo/prototipo)
+      if (error && error.message.includes('Invalid login credentials')) {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              role: 'client'
+            }
+          }
+        })
+        if (signUpError) throw signUpError
+      } else if (error) {
+        throw error
+      }
+
       // Redirigimos de vuelta a la página del artista o al inicio
       const searchParams = new URLSearchParams(window.location.search)
       const redirectPath = searchParams.get('redirect') || "/"
       router.push(redirectPath)
-      // Pequeño timeout para forzar la actualización de la UI si Next.js no detecta la navegación de la misma página inmediatamente
-      setTimeout(() => {
-        window.location.reload()
-      }, 100)
-    }, 1500)
+    } catch (err: any) {
+      console.error('Error de autenticación:', err.message)
+      alert('Error: ' + err.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -127,7 +147,7 @@ export default function ClientLoginPage() {
           
           <div className="mt-6 text-center">
             <span className="text-sm text-zinc-500">¿Aún no tienes cuenta? </span>
-            <span className="text-white text-sm font-medium hover:underline cursor-pointer">Regístrate</span>
+            <Link href="/register" className="text-white text-sm font-medium hover:underline cursor-pointer">Regístrate</Link>
           </div>
         </div>
       </motion.div>

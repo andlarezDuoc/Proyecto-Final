@@ -84,11 +84,11 @@ export function ArtistCard({ artist, index }: ArtistCardProps) {
         </p>
 
         <div className="flex gap-3 mt-auto">
-          <Link href={`/artist/${artist.id}`} className="flex-1">
-            <Button className="w-full bg-white/10 hover:bg-white/20 text-white border-none rounded-md h-10 font-medium">
+          <Button asChild className="w-full bg-white/10 hover:bg-white/20 text-white border-none rounded-md h-10 font-medium flex-1">
+            <Link href={`/artist/${artist.id}`}>
               Ver perfil
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Button variant="ghost" className="flex-1 hover:bg-white/5 text-white rounded-md h-10 font-medium">
             Reservar
           </Button>

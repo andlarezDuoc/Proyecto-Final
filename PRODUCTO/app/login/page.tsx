@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -15,19 +16,40 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulando inicio de sesión temporal
-    setTimeout(() => {
-      setIsLoading(false)
-      // Guardamos la sesión local para reflejar estado de Auth
-      localStorage.setItem('authRole', 'artist')
-      // Como esto es un prototipo local, aceptamos cualquier intento como válido 
-      // y mandamos al usuario directamente a su Dashboard
+    try {
+      // Intentamos iniciar sesión
+      let { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      // Si el usuario no existe, lo registramos automáticamente (solo para desarrollo/prototipo)
+      if (error && error.message.includes('Invalid login credentials')) {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              role: 'artist'
+            }
+          }
+        })
+        if (signUpError) throw signUpError
+      } else if (error) {
+        throw error
+      }
+
       router.push("/dashboard")
-    }, 1500)
+    } catch (err: any) {
+      console.error('Error de autenticación:', err.message)
+      alert('Error: ' + err.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -116,8 +138,9 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-8 text-center text-sm text-zinc-500">
-            Problemas para ingresar? <span className="text-white cursor-pointer hover:underline">Contacta a soporte</span>
+          <div className="mt-8 text-center text-sm">
+            <span className="text-zinc-500">¿No tienes cuenta de creador? </span>
+            <Link href="/register" className="text-white cursor-pointer hover:underline">Regístrate aquí</Link>
           </div>
         </div>
       </motion.div>

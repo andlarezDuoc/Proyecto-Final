@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -8,7 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Button } from "@/components/ui/button"
 import { ArtistCard } from "./artist-card"
-import { artists, ArtistStyle, Location } from "@/lib/data/artists"
+import { Artist, ArtistStyle, Location } from "@/lib/data/artists"
+import { supabase } from "@/lib/supabase"
 
 export function MarketplaceSection() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -28,15 +29,44 @@ export function MarketplaceSection() {
     "Vitacura", "Macul", "La Florida"
   ]
 
+  const [dbArtists, setDbArtists] = useState<Artist[]>([])
+  const [loading, setLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchArtists() {
+      try {
+        const { data, error } = await supabase.from('artists').select('*')
+        if (error) {
+          console.error("Supabase select error:", error)
+          setErrorMsg(error.message)
+        }
+        if (data) {
+          const mapped = data.map(a => ({
+            ...a,
+            shortBio: a.shortbio,
+            fullBio: a.fullbio
+          })) as Artist[]
+          setDbArtists(mapped)
+        }
+      } catch (err: any) {
+        setErrorMsg(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchArtists()
+  }, [])
+
   const filteredArtists = useMemo(() => {
-    return artists.filter((artist) => {
+    return dbArtists.filter((artist) => {
       const matchesSearch = artist.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStyle = selectedStyles.length === 0 || selectedStyles.some(s => artist.styles.includes(s as ArtistStyle));
       const matchesLocation = selectedLocations.length === 0 || selectedLocations.includes(artist.location);
 
       return matchesSearch && matchesStyle && matchesLocation;
     })
-  }, [searchTerm, selectedStyles, selectedLocations])
+  }, [dbArtists, searchTerm, selectedStyles, selectedLocations])
 
   const applyFilters = () => {
     setSelectedStyles(pendingStyles);
@@ -173,8 +203,22 @@ export function MarketplaceSection() {
 
             </div>
 
-            {/* Grid */}
-            {filteredArtists.length > 0 ? (
+            {/* Loading state */}
+            {loading ? (
+              <div className="text-center py-20 bg-[#121212]/80 rounded-2xl border border-white/10 backdrop-blur-md">
+                <p className="text-white text-lg animate-pulse">Cargando artistas desde Supabase...</p>
+              </div>
+            ) : errorMsg ? (
+              <div className="text-center py-20 bg-red-950/80 rounded-2xl border border-red-500/50 backdrop-blur-md">
+                <h3 className="text-xl font-bold text-red-200 mb-2">Error al cargar datos</h3>
+                <p className="text-red-400">
+                  {errorMsg}
+                </p>
+                <p className="text-red-400/80 text-sm mt-4">
+                  (Revisa la configuración de políticas RLS en Supabase)
+                </p>
+              </div>
+            ) : filteredArtists.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredArtists.map((artist, index) => (
                   <ArtistCard key={artist.id} artist={artist} index={index} />

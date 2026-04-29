@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 
+import { supabase } from "@/lib/supabase"
+
 interface Review {
   id: string;
   artistId: string;
@@ -26,10 +28,13 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
 
   useEffect(() => {
     // Check if logged in as client
-    const role = localStorage.getItem('authRole')
-    if (role === 'client') {
-      setIsClient(true)
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user?.user_metadata?.role === 'client') {
+        setIsClient(true)
+      }
     }
+    checkSession()
 
     // Load reviews from local storage
     const stored = localStorage.getItem(`reviews_${artistId}`)
@@ -44,7 +49,7 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
           author: "Cliente Anónimo",
           rating: 5,
           comment: `¡Excelente trabajo! Me encantó cómo quedó mi tatuaje con ${artistName}.`,
-          date: new Date().toISOString()
+          date: "2024-01-15T12:00:00.000Z" // Deterministic date to prevent hydration errors
         }
       ]
       setReviews(mockReviews)
@@ -127,11 +132,11 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
               </div>
               <h3 className="text-xl font-bold text-white mb-2">¿Te tatuaste con {artistName.split(' ')[0]}?</h3>
               <p className="text-zinc-400 mb-6 max-w-md mx-auto">Inicia sesión como cliente para poder dejar una reseña, calificar el servicio y compartir tu experiencia.</p>
-              <Link href={`/login-client?redirect=/artist/${artistId}`}>
-                <Button className="bg-white text-black hover:bg-zinc-200 px-6">
+              <Button asChild className="bg-white text-black hover:bg-zinc-200 px-6">
+                <Link href={`/login-client?redirect=/artist/${artistId}`}>
                   Iniciar Sesión como Cliente
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           )}
         </div>

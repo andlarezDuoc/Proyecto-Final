@@ -7,21 +7,43 @@ import { WhatsAppChat } from "@/components/whatsapp-chat"
 import { ClientUploadPhoto } from "@/components/client-upload-photo"
 import { ReviewsSection } from "@/components/reviews-section"
 import { Footer } from "@/components/footer"
-import { artists } from "@/lib/data/artists"
+import { supabase } from "@/lib/supabase"
 import { notFound } from "next/navigation"
 
-export function generateStaticParams() {
-  return artists.map((artist) => ({
-    id: artist.id,
-  }))
-}
+export const dynamic = 'force-dynamic';
 
 export default async function ArtistProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
-  const artist = artists.find((a) => a.id === resolvedParams.id)
+  const { data, error } = await supabase
+    .from('artists')
+    .select('*')
+    .eq('id', resolvedParams.id)
+    .single()
 
-  if (!artist) {
-    notFound()
+  if (error) {
+    console.error("Error al obtener artista:", error)
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="bg-red-950 border border-red-500 p-8 rounded-xl max-w-md text-center">
+          <h1 className="text-white text-2xl font-bold mb-4">Error: Artista no encontrado</h1>
+          <p className="text-red-200">
+            ID buscado: {resolvedParams.id}
+          </p>
+          <p className="text-red-400 text-sm mt-4">
+            (Si ves esto, significa que Supabase no devolvió datos para este ID).
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  const artist = {
+    ...data,
+    shortBio: data.shortbio,
+    fullBio: data.fullbio
   }
 
   return (

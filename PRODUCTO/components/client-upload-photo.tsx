@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Artist } from "@/lib/data/artists"
+import { supabase } from "@/lib/supabase"
 
 interface ClientUploadPhotoProps {
   artist: Artist
@@ -29,11 +30,14 @@ export function ClientUploadPhoto({ artist }: ClientUploadPhotoProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    // Verificar temporalmente en localStorage si tenemos la sesión de 'cliente' activada
-    const role = localStorage.getItem("authRole")
-    if (role === "client") {
-      setIsClient(true)
+    // Check if logged in as client
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user?.user_metadata?.role === 'client') {
+        setIsClient(true)
+      }
     }
+    checkSession()
   }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
