@@ -1,14 +1,14 @@
 # Dependencias e instalaciones
 node_modules/
-frontend/node_modules/
+PRODUCTO/frontend/node_modules/
 
 # Compilación y caché de Next.js
 .next/
-frontend/.next/
+PRODUCTO/frontend/.next/
 
 # Archivos de variables de entorno locales (credenciales privadas)
 .env*.local
-frontend/.env*.local
+PRODUCTO/frontend/.env*.local
 
 # Archivos del sistema y del editor
 .DS_Store
