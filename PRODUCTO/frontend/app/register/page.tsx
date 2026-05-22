@@ -37,36 +37,49 @@ export default function RegisterPage() {
 
       if (error) throw error
 
-      // 2. Insertamos el perfil en nuestra tabla pública (opcional si usamos Triggers, pero lo hacemos aquí por si acaso)
-      // Nota: Idealmente esto se hace con un Trigger en SQL, pero por ahora lo hacemos manual para asegurar que esté en la DB
+      if (!data.user) {
+        throw new Error("No se pudo obtener el usuario registrado desde Supabase.")
+      }
+
+      // 2. Insertamos el perfil en nuestra tabla pública
       const { error: profileError } = await supabase
         .from('profiles')
         .insert([
           {
-            id: data.user?.id,
+            id: data.user.id,
             email: email,
             role: role,
             full_name: name,
           }
         ])
 
-      // Si es artista, lo agregamos a la tabla artists con datos vacíos
-      if (role === 'artist' && data.user) {
-        await supabase.from('artists').insert([{
-          id: data.user.id, // En una app real, el ID sería un slug único, aquí usamos el auth ID o un slug generado
+      if (profileError) {
+        console.error('Error al insertar en profiles:', profileError)
+        throw new Error(`Error en la base de datos (profiles): ${profileError.message}. ¿Ejecutaste el script SQL "estructura_completa.sql" en Supabase?`)
+      }
+
+      // Si es artista, lo agregamos a la tabla artists con datos vacíos (los default de la BD completarán el resto)
+      if (role === 'artist') {
+        const { error: artistError } = await supabase.from('artists').insert([{
+          id: data.user.id,
           name: name,
           email: email,
           location: "Ciudad",
           styles: [],
           portfolio: []
         }])
+
+        if (artistError) {
+          console.error('Error al insertar en artists:', artistError)
+          throw new Error(`Error en la base de datos (artists): ${artistError.message}. ¿Ejecutaste el script SQL "estructura_completa.sql" en Supabase?`)
+        }
       }
 
-      alert("¡Registro exitoso! Ya puedes iniciar sesión.")
+      alert("¡Registro exitoso! Ya puedes iniciar sesión. Nota: Si la confirmación de correo electrónico está activada en tu proyecto de Supabase, revisa tu bandeja de entrada para verificar tu cuenta antes de iniciar sesión.")
       router.push(role === 'artist' ? "/login" : "/login-client")
     } catch (err: any) {
       console.error('Error de registro:', err.message)
-      alert('Error: ' + err.message)
+      alert('Error de registro: ' + err.message)
     } finally {
       setIsLoading(false)
     }

@@ -1,14 +1,25 @@
 "use client"
 
-import { ReactNode } from "react"
+import { ReactNode, useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Droplet, Image as ImageIcon, Settings, LogOut, ArrowUpRight, Inbox } from "lucide-react"
+import { Droplet, Image as ImageIcon, LogOut, ArrowUpRight, Inbox } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+  const [artistId, setArtistId] = useState<string>("marcos-silva")
+
+  useEffect(() => {
+    async function getSession() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setArtistId(session.user.id)
+      }
+    }
+    getSession()
+  }, [])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -18,7 +29,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { name: "Portafolio", href: "/dashboard", icon: ImageIcon },
     { name: "Reportes", href: "/dashboard/reports", icon: Inbox },
-    { name: "Ajustes", href: "/dashboard/settings", icon: Settings },
   ]
 
   return (
@@ -58,7 +68,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
         <div className="mt-auto px-4 pb-6 hidden md:block space-y-2">
           <Link
-            href="/artist/marcos-silva"
+            href={`/artist/${artistId}`}
             target="_blank"
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
           >
@@ -86,7 +96,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       {/* Mobile Footer Actions (Logout/Profile) */}
       <div className="md:hidden border-t border-white/10 bg-black/50 backdrop-blur-xl p-4 flex justify-between gap-4 sticky bottom-0 z-20">
          <Link
-            href="/artist/marcos-silva"
+            href={`/artist/${artistId}`}
             target="_blank"
             className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl bg-white/5 text-zinc-300 text-sm"
           >

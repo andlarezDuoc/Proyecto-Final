@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Upload, Trash2, Plus, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Artist } from "@/lib/data/artists"
@@ -20,8 +21,8 @@ import {
 } from "@/components/ui/alert-dialog"
 
 export default function DashboardPage() {
-  // Simularemos que el usuario logueado es siempre Marcos Silva para esta Demo
-  const MOCK_USER_ID = "marcos-silva"
+  const router = useRouter()
+  const [artistId, setArtistId] = useState<string | null>(null)
   const [defaultArtistData, setDefaultArtistData] = useState<Artist | null>(null)
   
   // Local state for the gallery to demonstrate CRUD operations visually
@@ -30,17 +31,59 @@ export default function DashboardPage() {
   
   useEffect(() => {
     async function fetchUser() {
-      const { data } = await supabase.from('artists').select('*').eq('id', MOCK_USER_ID).single()
-      if (data) {
-        setDefaultArtistData({
-          ...data,
-          shortBio: data.shortbio,
-          fullBio: data.fullbio
-        } as Artist)
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const userId = session.user.id
+        setArtistId(userId)
+        
+        const { data, error } = await supabase
+          .from('artists')
+          .select('*')
+          .eq('id', userId)
+          .single()
+          
+        if (data) {
+          setDefaultArtistData({
+            ...data,
+            shortBio: data.shortbio,
+            fullBio: data.fullbio
+          } as Artist)
+        } else {
+          // Si el artista no tiene perfil en artists aún, creamos un registro inicial en la base de datos
+          console.log("No se encontró perfil de artista en la base de datos, creando uno inicial...")
+          const initialArtist = {
+            id: userId,
+            name: session.user.user_metadata?.full_name || "Nuevo Artista",
+            email: session.user.email || "",
+            location: "Ciudad",
+            styles: [],
+            portfolio: [],
+            shortbio: "Nuevo artista en Black Ink.",
+            fullbio: "Biografía en desarrollo.",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
+            experience: 1,
+            stats: { rating: 5, completed: 0, reviews: 0 },
+            instagram: ""
+          }
+          
+          const { error: insertError } = await supabase.from('artists').insert([initialArtist])
+          if (insertError) {
+            console.error('Error al insertar perfil de artista inicial:', insertError)
+          }
+          
+          setDefaultArtistData({
+            ...initialArtist,
+            shortBio: initialArtist.shortbio,
+            fullBio: initialArtist.fullbio
+          } as Artist)
+        }
+      } else {
+        // Si no hay sesión iniciada, redirigimos a la pantalla de login del tatuador
+        router.push('/login')
       }
     }
     fetchUser()
-  }, [])
+  }, [router])
   
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -52,14 +95,14 @@ export default function DashboardPage() {
   }, [defaultArtistData])
 
   const handleDelete = async (indexToDelete: number) => {
-    if (!defaultArtistData) return
+    if (!defaultArtistData || !artistId) return
     const updatedPortfolio = gallery.filter((_, i) => i !== indexToDelete)
     
     try {
       const { error } = await supabase
         .from('artists')
         .update({ portfolio: updatedPortfolio })
-        .eq('id', MOCK_USER_ID)
+        .eq('id', artistId)
       
       if (error) throw error
       setGallery(updatedPortfolio)
@@ -75,33 +118,33 @@ export default function DashboardPage() {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file || !defaultArtistData) return
+    if (!file || !defaultArtistData || !artistId) return
 
     try {
-      // 1. Upload to Supabase Storage
+      // 1. Subir a Supabase Storage
       const fileExt = file.name.split('.').pop()
-      const fileName = `${MOCK_USER_ID}-${Date.now()}.${fileExt}`
+      const fileName = `${artistId}-${Date.now()}.${fileExt}`
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('portfolio')
         .upload(fileName, file)
 
       if (uploadError) throw uploadError
 
-      // 2. Get Public URL
+      // 2. Obtener URL pública
       const { data: { publicUrl } } = supabase.storage
         .from('portfolio')
         .getPublicUrl(fileName)
 
-      // 3. Update artist record in database
+      // 3. Actualizar registro del artista en base de datos
       const updatedPortfolio = [publicUrl, ...gallery]
       const { error: updateError } = await supabase
         .from('artists')
         .update({ portfolio: updatedPortfolio })
-        .eq('id', MOCK_USER_ID)
+        .eq('id', artistId)
 
       if (updateError) throw updateError
 
-      // 4. Update local state
+      // 4. Actualizar estado local
       setGallery(updatedPortfolio)
 
       if (fileInputRef.current) {
@@ -109,7 +152,7 @@ export default function DashboardPage() {
       }
     } catch (err: any) {
       console.error('Error uploading image:', err.message)
-      alert('Error al subir la imagen. ¿Creaste el bucket "portfolio" en Supabase?')
+      alert('Error al subir la imagen. ¿Creaste el bucket "portfolio" con políticas públicas en Supabase?')
     }
   }
 

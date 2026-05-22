@@ -21,32 +21,27 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      // Intentamos iniciar sesión
-      let { error } = await supabase.auth.signInWithPassword({
+      // Intentamos iniciar sesión real en Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      // Si el usuario no existe, lo registramos automáticamente (solo para desarrollo/prototipo)
-      if (error && error.message.includes('Invalid login credentials')) {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              role: 'artist'
-            }
-          }
-        })
-        if (signUpError) throw signUpError
-      } else if (error) {
-        throw error
+      if (error) {
+        // Manejo específico de errores comunes
+        if (error.message.includes("Email not confirmed")) {
+          throw new Error("El correo electrónico aún no ha sido confirmado. Revisa tu bandeja de entrada o desactiva la confirmación de correo (Confirm email) en la consola de Supabase (Settings -> Auth -> Providers -> Email).")
+        } else if (error.message.includes("Invalid login credentials")) {
+          throw new Error("El correo electrónico o la contraseña son incorrectos. Por favor, verifica tus datos o regístrate si no tienes cuenta.")
+        } else {
+          throw error
+        }
       }
 
       router.push("/dashboard")
     } catch (err: any) {
       console.error('Error de autenticación:', err.message)
-      alert('Error: ' + err.message)
+      alert('Error de inicio de sesión: ' + err.message)
     } finally {
       setIsLoading(false)
     }
