@@ -9,18 +9,44 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
+import { artists } from "@/lib/data/artists"
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [role, setRole] = useState<'client' | 'artist'>('client')
+  const [artistToken, setArtistToken] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+
+    // Validar token de tatuador si el rol es artist
+    let matchedArtistId = ""
+    if (role === 'artist') {
+      const cleanToken = artistToken.trim().toLowerCase()
+      // Expresión regular que valida formato: palabra-palabra (ej: nombre-apellido)
+      // Admite letras castellanas y guión único
+      const formatRegex = /^[a-zñáéíóúü]+-[a-zñáéíóúü]+$/i
+      
+      if (!formatRegex.test(cleanToken)) {
+        setIsLoading(false)
+        alert("Error de registro: El código de autorización de tatuador debe tener el formato 'nombre-apellido' en minúsculas y separado por un guión (ej: marcos-silva o juan-perez).")
+        return
+      }
+      
+      // Buscamos si coincide con uno de nuestros artistas pre-sembrados
+      const matched = artists.find(a => a.id.toLowerCase() === cleanToken)
+      if (matched) {
+        matchedArtistId = matched.id
+      } else {
+        // Si no es un artista pre-sembrado, es uno nuevo personalizado. Su token 'nombre-apellido' se guarda como su slug.
+        matchedArtistId = cleanToken
+      }
+    }
 
     try {
       // 1. Registramos al usuario en Supabase Auth (esto lo guarda en auth.users de forma segura)
@@ -31,6 +57,7 @@ export default function RegisterPage() {
           data: {
             role: role,
             full_name: name,
+            artist_slug: role === 'artist' ? matchedArtistId : undefined
           }
         }
       })
@@ -195,6 +222,29 @@ export default function RegisterPage() {
                 />
               </div>
             </div>
+
+            {role === 'artist' && (
+              <div className="space-y-2">
+                <Label htmlFor="artistToken" className="text-zinc-300">
+                  Código de Autorización / ID de Tatuador
+                </Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                  <Input
+                    id="artistToken"
+                    type="text"
+                    placeholder="ej: marcos-silva"
+                    required
+                    value={artistToken}
+                    onChange={(e) => setArtistToken(e.target.value)}
+                    className="pl-10 bg-black/50 border-zinc-700 text-white focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-zinc-600"
+                  />
+                </div>
+                <p className="text-[11px] text-zinc-500 leading-relaxed">
+                  Ingresa tu ID de tatuador oficial de la lista (ej: <code className="text-zinc-400 font-mono">marcos-silva</code>, <code className="text-zinc-400 font-mono">camila-rojas</code>, <code className="text-zinc-400 font-mono">daniel-herrera</code>) para reclamar y poblar automáticamente tu biografía y portafolio en Supabase.
+                </p>
+              </div>
+            )}
 
             <Button
               type="submit"

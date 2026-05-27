@@ -63,6 +63,15 @@ export function BookingSection({ artist }: BookingSectionProps) {
             setShowLoginSuccess(true)
             sessionStorage.removeItem("booking_should_resume")
             sessionStorage.removeItem("booking_selected_service")
+            
+            // Programmatic smooth scroll directly to the booking section!
+            setTimeout(() => {
+              const element = document.getElementById("agendar")
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            }, 300)
+
             setTimeout(() => {
               setShowLoginSuccess(false)
             }, 6000)
@@ -144,7 +153,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
       if (typeof window !== 'undefined' && userRole !== 'client') {
         sessionStorage.setItem("booking_selected_service", selectedService || "")
         sessionStorage.setItem("booking_should_resume", "true")
-        router.push('/login-client?redirect=' + encodeURIComponent(window.location.pathname))
+        router.push('/login-client?redirect=' + encodeURIComponent(window.location.pathname + '#agendar'))
         return
       }
     }

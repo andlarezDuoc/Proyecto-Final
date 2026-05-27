@@ -85,9 +85,11 @@ export function Navigation() {
             {userRole ? (
               <button 
                 onClick={async () => {
-                  await supabase.auth.signOut()
-                  setUserRole(null)
-                  window.location.reload()
+                  if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                    await supabase.auth.signOut()
+                    setUserRole(null)
+                    window.location.reload()
+                  }
                 }}
                 className="text-sm flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors"
               >
@@ -144,10 +146,12 @@ export function Navigation() {
           {userRole ? (
             <button 
               onClick={async () => {
-                await supabase.auth.signOut()
-                setUserRole(null)
-                setIsOpen(false)
-                window.location.reload()
+                if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                  await supabase.auth.signOut()
+                  setUserRole(null)
+                  setIsOpen(false)
+                  window.location.reload()
+                }
               }}
               className="text-lg text-left text-red-400 hover:text-red-300 transition-colors py-2 flex items-center gap-2"
             >

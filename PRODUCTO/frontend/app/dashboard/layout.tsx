@@ -22,8 +22,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   }, [])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
+    if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+      await supabase.auth.signOut()
+      router.push('/')
+    }
   }
 
   const navItems = [

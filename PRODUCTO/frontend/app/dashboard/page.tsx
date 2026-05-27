@@ -6,7 +6,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Upload, Trash2, Plus, Image as ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Artist } from "@/lib/data/artists"
+import { Artist, artists } from "@/lib/data/artists"
 import { supabase } from "@/lib/supabase"
 import {
   AlertDialog,
@@ -36,45 +36,84 @@ export default function DashboardPage() {
         const userId = session.user.id
         setArtistId(userId)
         
-        const { data, error } = await supabase
+        let artistRecord = null
+        
+        // 1. Buscamos primero si ya existe un perfil en la base de datos con nuestro UUID real
+        const { data: uuidData } = await supabase
           .from('artists')
           .select('*')
           .eq('id', userId)
           .single()
           
-        if (data) {
-          setDefaultArtistData({
-            ...data,
-            shortBio: data.shortbio,
-            fullBio: data.fullbio
-          } as Artist)
+        const artistSlug = session.user.user_metadata?.artist_slug
+        const localMatch = artists.find(a => a.id === artistSlug) || artists.find(a => 
+          session.user.email && a.id.toLowerCase().includes(session.user.email.split('@')[0].toLowerCase())
+        )
+        
+        if (uuidData) {
+          artistRecord = uuidData
+          
+          // Cada vez que se inicia sesión, nos aseguramos de cargarle las 8 imágenes del portafolio del artista local
+          if (localMatch) {
+            console.log("Cargando/Restaurando las 8 imágenes del portafolio en la base de datos...")
+            const updatedData = {
+              name: uuidData.name === "Nuevo Artista" ? localMatch.name : uuidData.name,
+              location: uuidData.location === "Ciudad" ? localMatch.location : uuidData.location,
+              styles: uuidData.styles && uuidData.styles.length > 0 ? uuidData.styles : localMatch.styles,
+              portfolio: localMatch.portfolio,
+              shortbio: uuidData.shortbio === "Nuevo artista en Black Ink." ? localMatch.shortBio : uuidData.shortbio,
+              fullbio: uuidData.fullbio === "Biografía en desarrollo." ? localMatch.fullBio : uuidData.fullbio,
+              avatar: uuidData.avatar.includes("unsplash.com/photo-1534528741775-53994a69daeb") ? localMatch.avatar : uuidData.avatar,
+              experience: uuidData.experience === 1 ? localMatch.experience : uuidData.experience,
+              instagram: uuidData.instagram === "" ? localMatch.instagram : uuidData.instagram
+            }
+            
+            const { error: updateError } = await supabase
+              .from('artists')
+              .update(updatedData)
+              .eq('id', userId)
+              
+            if (!updateError) {
+              artistRecord = { ...uuidData, ...updatedData }
+            } else {
+              console.error("Error al actualizar perfil de base de datos:", updateError)
+            }
+          }
         } else {
-          // Si el artista no tiene perfil en artists aún, creamos un registro inicial en la base de datos
-          console.log("No se encontró perfil de artista en la base de datos, creando uno inicial...")
+          // Si no existe un perfil en la base de datos para nuestro UUID, lo creamos
+          console.log("No se encontró perfil de artista con UUID en la base de datos. Creando uno inicial...")
+          
           const initialArtist = {
-            id: userId,
-            name: session.user.user_metadata?.full_name || "Nuevo Artista",
+            id: userId, // ID es el UUID real del usuario autenticado
+            name: localMatch ? localMatch.name : (session.user.user_metadata?.full_name || "Nuevo Artista"),
             email: session.user.email || "",
-            location: "Ciudad",
-            styles: [],
-            portfolio: [],
-            shortbio: "Nuevo artista en Black Ink.",
-            fullbio: "Biografía en desarrollo.",
-            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
-            experience: 1,
-            stats: { rating: 5, completed: 0, reviews: 0 },
-            instagram: ""
+            location: localMatch ? localMatch.location : "Ciudad",
+            styles: localMatch ? localMatch.styles : [],
+            portfolio: localMatch ? localMatch.portfolio : [],
+            shortbio: localMatch ? localMatch.shortBio : "Nuevo artista en Black Ink.",
+            fullbio: localMatch ? localMatch.fullBio : "Biografía en desarrollo.",
+            avatar: localMatch ? localMatch.avatar : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
+            experience: localMatch ? localMatch.experience : 1,
+            stats: localMatch ? { rating: Number(localMatch.stats.rating) || 5, completed: 0, reviews: 0 } : { rating: 5, completed: 0, reviews: 0 },
+            instagram: localMatch ? localMatch.instagram : ""
           }
           
+          // Hacemos el INSERT en Supabase. Esto funciona 100% porque id == userId (pasa la regla RLS de INSERT)
           const { error: insertError } = await supabase.from('artists').insert([initialArtist])
           if (insertError) {
             console.error('Error al insertar perfil de artista inicial:', insertError)
+          } else {
+            console.log("Perfil inicial de artista insertado exitosamente con RLS aprobado.")
           }
           
+          artistRecord = initialArtist
+        }
+        
+        if (artistRecord) {
           setDefaultArtistData({
-            ...initialArtist,
-            shortBio: initialArtist.shortbio,
-            fullBio: initialArtist.fullbio
+            ...artistRecord,
+            shortBio: artistRecord.shortbio || artistRecord.shortBio || "Nuevo artista en Black Ink.",
+            fullBio: artistRecord.fullbio || artistRecord.fullBio || "Biografía en desarrollo."
           } as Artist)
         }
       } else {
@@ -89,7 +128,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (defaultArtistData) {
-      setGallery(defaultArtistData.portfolio)
+      setGallery(defaultArtistData.portfolio || [])
       setIsReady(true)
     }
   }, [defaultArtistData])

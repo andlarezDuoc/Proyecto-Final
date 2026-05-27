@@ -14,14 +14,32 @@ export const dynamic = 'force-dynamic';
 
 export default async function ArtistProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
-  const { data, error } = await supabase
+  let { data, error } = await supabase
     .from('artists')
     .select('*')
     .eq('id', resolvedParams.id)
     .single()
 
   if (error) {
-    console.error("Error al obtener artista:", error)
+    console.error("Error al obtener artista por ID:", error)
+  }
+
+  // Fallback por slug o email prefix si no lo encuentra por ID (para mantener vigentes las URLs con slugs pre-sembrados)
+  if (!data) {
+    const slugName = resolvedParams.id.split('-')[0] // 'marcos' de 'marcos-silva'
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from('artists')
+      .select('*')
+      .ilike('email', `%${slugName}%`)
+      .limit(1)
+
+    if (fallbackError) {
+      console.error("Error al buscar artista por slug alternativo:", fallbackError)
+    }
+
+    if (fallbackData && fallbackData.length > 0) {
+      data = fallbackData[0]
+    }
   }
 
   if (!data) {
