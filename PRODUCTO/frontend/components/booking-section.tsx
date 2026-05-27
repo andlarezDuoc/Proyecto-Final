@@ -216,7 +216,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
         </div>
 
         {/* Form container */}
-        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-6 sm:p-8 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
+        <div className="bg-black/85 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
           
           {/* Step 1: Select Service */}
           {step === 1 && (
@@ -247,7 +247,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                         className={`p-5 rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
                           isSelected
                             ? "border-slate-300 bg-slate-300 text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.2)] scale-[1.05] z-10"
-                            : "border-white/10 bg-black/65 hover:bg-black/40 hover:border-white/40 hover:scale-[1.02] text-foreground/80 hover:text-white"
+                            : "border-white/10 bg-white/5 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] text-foreground/80 hover:text-white"
                         }`}
                       >
                         <div className="flex justify-between items-start">
