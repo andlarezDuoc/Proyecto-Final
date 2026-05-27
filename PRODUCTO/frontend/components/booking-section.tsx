@@ -44,16 +44,29 @@ export function BookingSection({ artist }: BookingSectionProps) {
   const router = useRouter()
   const [userRole, setUserRole] = useState<string | null>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false)
 
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
         setUserEmail(session.user.email || "")
-        if (session.user.user_metadata?.role) {
-          setUserRole(session.user.user_metadata.role)
-        } else {
-          setUserRole("client") // fallback secure default
+        const role = session.user.user_metadata?.role || "client"
+        setUserRole(role)
+
+        if (typeof window !== "undefined" && role === "client") {
+          const shouldResume = sessionStorage.getItem("booking_should_resume")
+          const savedService = sessionStorage.getItem("booking_selected_service")
+          if (shouldResume === "true" && savedService) {
+            setSelectedService(savedService)
+            setStep(2)
+            setShowLoginSuccess(true)
+            sessionStorage.removeItem("booking_should_resume")
+            sessionStorage.removeItem("booking_selected_service")
+            setTimeout(() => {
+              setShowLoginSuccess(false)
+            }, 6000)
+          }
         }
       }
     }
@@ -129,6 +142,8 @@ export function BookingSection({ artist }: BookingSectionProps) {
   const handleNextStep = () => {
     if (step === 1) {
       if (typeof window !== 'undefined' && userRole !== 'client') {
+        sessionStorage.setItem("booking_selected_service", selectedService || "")
+        sessionStorage.setItem("booking_should_resume", "true")
         router.push('/login-client?redirect=' + encodeURIComponent(window.location.pathname))
         return
       }
@@ -218,6 +233,13 @@ export function BookingSection({ artist }: BookingSectionProps) {
         {/* Form container */}
         <div className="bg-black/85 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
           
+          {showLoginSuccess && (
+            <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-xl text-sm flex items-center justify-center gap-2 mb-6 animate-pulse-slow">
+              <Check className="w-5 h-5 flex-shrink-0 text-emerald-400" />
+              <span className="font-semibold text-center">¡Inicio de sesión exitoso! Tu progreso ha sido recuperado y estás en el Paso 2 para elegir fecha y hora.</span>
+            </div>
+          )}
+
           {/* Step 1: Select Service */}
           {step === 1 && (
             <motion.div
