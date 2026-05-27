@@ -48,9 +48,20 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
 
   return (
     <div className="relative min-h-screen">
-      {/* Fondo base sólido y gradiente de luz blanco al centro */}
-      <div className="fixed inset-0 z-0 bg-black" />
-      <div className="fixed inset-0 z-0 bg-[linear-gradient(to_right,rgba(0,0,0,1)_0%,rgba(255,255,255,0.08)_35%,rgba(255,255,255,0.08)_65%,rgba(0,0,0,1)_100%)] pointer-events-none" />
+      {/* Fixed blurred background with silver tattoo designs matching the home page */}
+      <div
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-xlVV5yj2kwTMUqKixoOEJCTUmTIRy4.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          filter: 'blur(8px)',
+          transform: 'scale(1.1)',
+        }}
+      />
+      {/* Light overlay to preserve readability while keeping silver designs fully visible */}
+      <div className="fixed inset-0 z-0 bg-black/10" />
       {/* Main content */}
       <main className="relative z-10 min-h-screen">
         <Navigation />

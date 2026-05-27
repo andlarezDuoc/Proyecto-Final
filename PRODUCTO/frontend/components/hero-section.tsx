@@ -29,91 +29,7 @@ export function HeroSection() {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Blurred background with artistic elements */}
-      <div className="absolute inset-0">
-        {/* Base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background" />
-
-        {/* Large blurred decorative images for background effect */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-32 -left-32 w-[600px] h-[600px] opacity-40 blur-3xl">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ae0gsgpl6qYo8q2J3AhbNCrW5q6pJD.png"
-              alt=""
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="absolute -bottom-32 -right-32 w-[500px] h-[700px] opacity-30 blur-3xl">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ofXswJsV4k0H5hhzVhvkuntxgFYMym.png"
-              alt=""
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-20 blur-3xl">
-            <AnimatePresence>
-              <motion.div
-                key={currentImageIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.5 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={TATTOO_IMAGES[currentImageIndex]}
-                  alt=""
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Gradient overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-background/80" />
-
-        {/* Subtle animated glow effects */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/20 blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-1/4 left-1/4 w-80 h-80 rounded-full bg-accent/20 blur-3xl"
-        />
-      </div>
-
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-                           linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }}
-      />
+      {/* 100% Transparent background to seamlessly show the fixed silver tattoo image from page.tsx */}
 
       {/* Main content - sharp and clear */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
@@ -134,16 +50,16 @@ export function HeroSection() {
               <span className="text-sm text-primary font-medium">Arte en tu piel</span>
             </motion.div>
 
-            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-8 drop-shadow-[0_10px_20px_rgba(0,0,0,1)]">
-              <span className="block bg-gradient-to-b from-white via-white/90 to-gray-400 bg-clip-text text-transparent pb-2">
+            <h1 className="font-rock text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_16px_32px_rgba(0,0,0,0.95)] drop-shadow-[0_32px_64px_rgba(0,0,0,0.95)] uppercase tracking-wider">
+              <span className="block pb-2 bg-gradient-to-b from-white via-slate-200 to-black bg-clip-text text-transparent">
                 Black Ink
               </span>
-              <span className="block bg-gradient-to-r from-primary via-accent to-chrome bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-b from-white via-slate-200 to-black bg-clip-text text-transparent">
                 Tattoo
               </span>
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed backdrop-blur-sm bg-background/30 rounded-xl p-4">
+            <p className="text-lg text-white font-medium max-w-xl mb-10 leading-relaxed backdrop-blur-sm bg-black/40 rounded-xl p-4 drop-shadow-md">
               Encuentra a los mejores artistas del tatuaje en un solo lugar. Explora estilos,
               portafolios y agenda tu próxima obra de arte con confianza.
             </p>
@@ -211,9 +127,7 @@ export function HeroSection() {
                 </AnimatePresence>
               </div>
 
-              {/* Decorative glowing frame */}
-              <div className="absolute -inset-4 rounded-3xl border border-primary/30 shadow-lg shadow-primary/5" />
-              <div className="absolute -inset-8 rounded-3xl border border-primary/10" />
+              {/* Decorative glowing frames removed for a cleaner floating card look */}
 
               {/* Floating images removed as requested */}
             </div>

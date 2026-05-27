@@ -75,7 +75,7 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors relative group"
+                className="text-sm tracking-wide text-white hover:text-primary transition-colors relative group font-medium"
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
@@ -95,7 +95,7 @@ export function Navigation() {
               </button>
             ) : (
               <DropdownMenu>
-                <DropdownMenuTrigger className="text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors relative group flex items-center gap-1 outline-none">
+                <DropdownMenuTrigger className="text-sm tracking-wide text-white hover:text-primary transition-colors relative group flex items-center gap-1 outline-none font-medium">
                   Iniciar Sesión <ChevronDown className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-black/90 backdrop-blur-xl border-white/10 w-48 mt-2">
@@ -134,7 +134,7 @@ export function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-lg text-muted-foreground hover:text-primary transition-colors py-2"
+              className="text-lg text-white hover:text-primary transition-colors py-2 font-medium"
               onClick={() => setIsOpen(false)}
             >
               {item.label}

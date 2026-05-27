@@ -19,8 +19,8 @@ export default function HomePage() {
           transform: 'scale(1.1)',
         }}
       />
-      {/* Dark overlay for readability */}
-      <div className="fixed inset-0 z-0 bg-black/60" />
+      {/* Light overlay to preserve readability while keeping silver designs fully visible */}
+      <div className="fixed inset-0 z-0 bg-black/10" />
 
       {/* Main content */}
       <main className="relative z-10 min-h-screen">

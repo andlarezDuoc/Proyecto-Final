@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { Instagram, Award, Heart, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Artist } from "@/lib/data/artists"
@@ -146,8 +147,10 @@ export function AboutSection({ artist }: AboutSectionProps) {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1">
-                Agendar Cita
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1" asChild>
+                <Link href="#agendar">
+                  Agendar Cita
+                </Link>
               </Button>
               <Button variant="outline" className="border-border flex items-center gap-2" asChild>
                 <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">

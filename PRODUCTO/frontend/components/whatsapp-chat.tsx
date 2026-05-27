@@ -27,7 +27,7 @@ const initialMessages: Message[] = [
   },
 ]
 
-const botResponses: Record<string, { text: string; options?: string[]; followUp?: string }> = {
+export const botResponses: Record<string, { text: string; options?: string[]; followUp?: string }> = {
   "Quiero agendar una cita": {
     text: "¡Genial! Me encantaría ayudarte a agendar. Antes, necesito hacerte algunas preguntas para preparar todo. ¿Es tu primer tatuaje?",
     options: ["Sí, es mi primero", "No, ya tengo tatuajes"],

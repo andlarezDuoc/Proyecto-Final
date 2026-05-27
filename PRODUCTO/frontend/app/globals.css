@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=New+Rocker&family=Pirata+One&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -46,6 +47,8 @@
   --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-serif: var(--font-cinzel), 'Cinzel', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-rock: 'New Rocker', cursive, sans-serif;
+  --font-gothic: 'Pirata One', cursive, sans-serif;
   --color-chrome: var(--chrome);
   --color-chrome-dark: var(--chrome-dark);
   --color-silver: var(--silver);
