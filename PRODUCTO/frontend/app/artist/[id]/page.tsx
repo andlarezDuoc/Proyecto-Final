@@ -74,19 +74,19 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-          filter: 'blur(8px)',
-          transform: 'scale(1.1)',
+          filter: 'blur(20px)',
+          transform: 'scale(1.2)',
         }}
       />
-      {/* Light overlay to preserve readability while keeping silver designs fully visible */}
-      <div className="fixed inset-0 z-0 bg-black/10" />
+      {/* Darker overlay to preserve readability while keeping silver designs visible */}
+      <div className="fixed inset-0 z-0 bg-black/40" />
       {/* Main content */}
-      <main className="relative z-10 min-h-screen">
+      <main className="relative z-10 min-h-screen md:pl-64">
         <Navigation />
 
         {/* We reuse the components passing down the artist data where needed */}
         {/* We can place AboutSection at the top as a profile header */}
-        <section className="pt-20">
+        <section className="pt-14">
           <AboutSection artist={artist} />
         </section>
 

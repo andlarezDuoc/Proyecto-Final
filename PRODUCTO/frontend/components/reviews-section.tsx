@@ -81,7 +81,7 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
   if (!isLoaded) return null;
 
   return (
-    <section className="py-24 relative overflow-hidden bg-zinc-950 border-t border-zinc-900">
+    <section id="resenas" className="py-24 relative overflow-hidden bg-zinc-950 border-t border-zinc-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

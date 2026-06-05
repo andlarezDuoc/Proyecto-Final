@@ -183,11 +183,9 @@ export function MarketplaceSection() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
               <div className="w-full">
                 <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2">
-                  Nuestros Tatuadores
+                  Artistas
                 </h2>
-                <p className="text-muted-foreground text-sm mb-6">
-                  Mostrando 1 - {filteredArtists.length > 12 ? 12 : filteredArtists.length} de {filteredArtists.length} artistas
-                </p>
+
                 {/* Search Bar */}
                 <div className="relative w-full max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />

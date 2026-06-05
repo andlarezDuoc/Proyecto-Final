@@ -3,17 +3,21 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { Instagram, Award, Heart, Clock } from "lucide-react"
+import { Instagram, Award, Heart, Clock, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Artist } from "@/lib/data/artists"
+import { Artist, artists } from "@/lib/data/artists"
 
 interface AboutSectionProps {
   artist: Artist;
 }
 
 export function AboutSection({ artist }: AboutSectionProps) {
+  // Find mock artist tattoos if it's missing from DB stats
+  const mockArtist = artists.find(a => a.id === artist.id || a.email.toLowerCase() === artist.email?.toLowerCase())
+  const tattoosCount = artist.stats?.tattoos || mockArtist?.stats?.tattoos || (artist.stats?.completed ? artist.stats.completed + "+" : "300+")
+
   return (
-    <section id="sobre-mi" className="py-24 bg-secondary/30 relative overflow-hidden">
+    <section id="sobre-mi" className="pt-10 pb-20 bg-secondary/30 relative overflow-hidden">
       {/* Blurred background decoration */}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] -translate-y-1/2 opacity-20 blur-3xl">
         <Image
@@ -76,23 +80,6 @@ export function AboutSection({ artist }: AboutSectionProps) {
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="absolute -top-4 -left-4 bg-card border border-border rounded-xl p-4 shadow-xl"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <p className="font-bold text-foreground">{artist.stats.tattoos}</p>
-                  <p className="text-sm text-muted-foreground">Clientes Felices</p>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
 
           {/* Content side */}
@@ -102,9 +89,21 @@ export function AboutSection({ artist }: AboutSectionProps) {
             viewport={{ once: true }}
             className="lg:pl-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <span className="text-sm text-primary font-medium">Artista & Fundadora</span>
-            </div>
+            <button
+              onClick={() => {
+                const element = document.getElementById("agendar")
+                if (element) {
+                  const offset = 90
+                  const elementPosition = element.getBoundingClientRect().top
+                  const offsetPosition = elementPosition + window.scrollY - offset
+                  window.scrollTo({ top: offsetPosition, behavior: "smooth" })
+                }
+              }}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white border border-white/20 bg-white/10 hover:bg-white/20 font-bold mb-6 cursor-pointer hover:scale-105 transition-all duration-300 shadow-md backdrop-blur-sm"
+            >
+              <Calendar className="w-4 h-4 text-white" />
+              <span>Agendar Cita</span>
+            </button>
 
             <h3 className="font-serif text-3xl font-bold text-foreground mb-4">
               {artist.name}
@@ -129,17 +128,17 @@ export function AboutSection({ artist }: AboutSectionProps) {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl bg-secondary/50 border border-border">
               <div className="text-center">
-                <Clock className="w-5 h-5 text-primary mx-auto mb-2" />
+                <Clock className="w-5 h-5 text-white mx-auto mb-2" />
                 <p className="text-2xl font-bold text-foreground">{artist.experience}+</p>
                 <p className="text-xs text-muted-foreground">Años</p>
               </div>
               <div className="text-center border-x border-border">
-                <Heart className="w-5 h-5 text-primary mx-auto mb-2" />
-                <p className="text-2xl font-bold text-foreground">{artist.stats.tattoos}</p>
+                <Heart className="w-5 h-5 text-white mx-auto mb-2" />
+                <p className="text-2xl font-bold text-foreground">{tattoosCount}</p>
                 <p className="text-xs text-muted-foreground">Tatuajes</p>
               </div>
               <div className="text-center">
-                <Award className="w-5 h-5 text-primary mx-auto mb-2" />
+                <Award className="w-5 h-5 text-white mx-auto mb-2" />
                 <p className="text-2xl font-bold text-foreground">100%</p>
                 <p className="text-xs text-muted-foreground">Pasión</p>
               </div>
@@ -147,15 +146,10 @@ export function AboutSection({ artist }: AboutSectionProps) {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1" asChild>
-                <Link href="#agendar">
-                  Agendar Cita
-                </Link>
-              </Button>
-              <Button variant="outline" className="border-border flex items-center gap-2" asChild>
+              <Button variant="outline" className="border-border flex items-center justify-center gap-2 flex-1" asChild>
                 <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">
                   <Instagram className="w-4 h-4" />
-                  {artist.instagram}
+                  Seguir en Instagram ({artist.instagram})
                 </a>
               </Button>
             </div>

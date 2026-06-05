@@ -40,16 +40,6 @@ export function HeroSection() {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-sm mb-8"
-            >
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm text-primary font-medium">Arte en tu piel</span>
-            </motion.div>
-
             <h1 className="font-rock text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_16px_32px_rgba(0,0,0,0.95)] drop-shadow-[0_32px_64px_rgba(0,0,0,0.95)] uppercase tracking-wider">
               <span className="block pb-2 bg-gradient-to-b from-white via-slate-200 to-black bg-clip-text text-transparent">
                 Black Ink
@@ -59,29 +49,12 @@ export function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-lg text-white font-medium max-w-xl mb-10 leading-relaxed backdrop-blur-sm bg-black/40 rounded-xl p-4 drop-shadow-md">
+            <p className="text-lg text-white font-medium max-w-xl mb-6 leading-relaxed backdrop-blur-sm bg-black/40 rounded-xl p-4 drop-shadow-md">
               Encuentra a los mejores artistas del tatuaje en un solo lugar. Explora estilos,
               portafolios y agenda tu próxima obra de arte con confianza.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 py-6 text-lg shadow-lg shadow-primary/25"
-                onClick={() => document.getElementById('artistas')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Buscar Artista
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-border hover:bg-secondary/80 text-foreground px-8 py-6 text-lg backdrop-blur-sm"
-              >
-                Nuestra Comunidad
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-8 mt-12 justify-center lg:justify-start">
+            <div className="flex items-center gap-8 mt-6 justify-center lg:justify-start">
               <div className="text-center backdrop-blur-sm bg-background/30 rounded-xl px-4 py-3">
                 <p className="text-3xl font-bold text-foreground">10+</p>
                 <p className="text-sm text-muted-foreground">Artistas</p>

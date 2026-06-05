@@ -15,15 +15,15 @@ export default function HomePage() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-          filter: 'blur(8px)',
-          transform: 'scale(1.1)',
+          filter: 'blur(20px)',
+          transform: 'scale(1.2)',
         }}
       />
-      {/* Light overlay to preserve readability while keeping silver designs fully visible */}
-      <div className="fixed inset-0 z-0 bg-black/10" />
+      {/* Darker overlay to preserve readability while keeping silver designs visible */}
+      <div className="fixed inset-0 z-0 bg-black/40" />
 
       {/* Main content */}
-      <main className="relative z-10 min-h-screen">
+      <main className="relative z-10 min-h-screen md:pl-64">
         <Navigation />
         <HeroSection />
         <MarketplaceSection />
