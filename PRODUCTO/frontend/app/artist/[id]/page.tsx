@@ -66,7 +66,7 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
 
   return (
     <div className="relative min-h-screen">
-      {/* Fixed blurred background with silver tattoo designs matching the home page */}
+      {/* Fondo difuminado fijo */}
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -78,14 +78,12 @@ export default async function ArtistProfilePage({ params }: { params: Promise<{ 
           transform: 'scale(1.2)',
         }}
       />
-      {/* Darker overlay to preserve readability while keeping silver designs visible */}
+      {/* Capa oscura para legibilidad */}
       <div className="fixed inset-0 z-0 bg-black/40" />
-      {/* Main content */}
+      {/* Contenido principal */}
       <main className="relative z-10 min-h-screen md:pl-64">
         <Navigation />
 
-        {/* We reuse the components passing down the artist data where needed */}
-        {/* We can place AboutSection at the top as a profile header */}
         <section className="pt-14">
           <AboutSection artist={artist} />
         </section>

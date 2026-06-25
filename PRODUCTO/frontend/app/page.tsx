@@ -7,7 +7,7 @@ import { WhatsAppChat } from "@/components/whatsapp-chat"
 export default function HomePage() {
   return (
     <div className="relative min-h-screen">
-      {/* Fixed blurred background */}
+      {/* Fondo difuminado fijo */}
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -19,10 +19,10 @@ export default function HomePage() {
           transform: 'scale(1.2)',
         }}
       />
-      {/* Darker overlay to preserve readability while keeping silver designs visible */}
+      {/* Capa oscura para legibilidad del texto */}
       <div className="fixed inset-0 z-0 bg-black/40" />
 
-      {/* Main content */}
+      {/* Contenido principal */}
       <main className="relative z-10 min-h-screen md:pl-64">
         <Navigation />
         <HeroSection />

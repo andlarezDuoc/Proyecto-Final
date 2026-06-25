@@ -107,7 +107,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
           </p>
         </motion.div>
 
-        {/* Design sheets grid */}
+        {/* Grilla de hojas de diseño */}
         <motion.div
           layout
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -131,10 +131,10 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  {/* Gradient overlay */}
+                  {/* Capa degradada */}
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
 
-                  {/* Badge */}
+                  {/* Etiqueta */}
                   <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-medium backdrop-blur-sm border border-white/20">
                     {sheet.designs}
                   </div>
@@ -163,7 +163,7 @@ export function DesignsSection({ artist }: DesignsSectionProps) {
 
       </div>
 
-      {/* Design sheet detail modal */}
+      {/* Modal de detalle de la hoja de diseño */}
       <Dialog open={!!selectedSheet} onOpenChange={() => setSelectedSheet(null)}>
         <DialogContent
           className="max-w-5xl bg-card border-border p-0 overflow-hidden max-h-[90vh]"

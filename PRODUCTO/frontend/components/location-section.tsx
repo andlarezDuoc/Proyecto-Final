@@ -96,7 +96,7 @@ export function LocationSection({ artist }: LocationSectionProps = {}) {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Map */}
+          {/* Mapa */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -127,7 +127,7 @@ export function LocationSection({ artist }: LocationSectionProps = {}) {
             </Button>
           </motion.div>
 
-          {/* Contact info */}
+          {/* Información de contacto */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -165,7 +165,7 @@ export function LocationSection({ artist }: LocationSectionProps = {}) {
               </div>
             </div>
 
-            {/* Additional info card */}
+            {/* Tarjeta de información adicional */}
             <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl border border-primary/20 p-8">
               <h4 className="font-serif text-lg font-bold text-foreground mb-3">
                 Antes de tu visita

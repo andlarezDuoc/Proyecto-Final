@@ -142,7 +142,6 @@ export function WhatsAppChat() {
   }, [messages])
 
   const handleSendMessage = (text: string) => {
-    // Add user message
     const userMessage: Message = {
       id: messages.length + 1,
       text,
@@ -152,14 +151,13 @@ export function WhatsAppChat() {
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate bot response delay
     setTimeout(() => {
       setIsTyping(false)
 
       const response = botResponses[text]
 
       if (response?.followUp === "whatsapp") {
-        // Open WhatsApp with pre-filled message
+        // Abrir WhatsApp con mensaje predefinido
         const whatsappMessage = encodeURIComponent(
           "¡Hola! Vengo del chat de INK Studio y me gustaría agendar una consulta."
         )
@@ -182,7 +180,7 @@ export function WhatsAppChat() {
 
   return (
     <>
-      {/* Chat button */}
+      {/* Botón del chat */}
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -197,7 +195,7 @@ export function WhatsAppChat() {
         )}
       </motion.button>
 
-      {/* Chat window */}
+      {/* Ventana del chat */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -206,7 +204,7 @@ export function WhatsAppChat() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-120px)] bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col"
           >
-            {/* Header */}
+            {/* Encabezado */}
             <div className="bg-[#25D366] text-white p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Bot className="w-5 h-5" />
@@ -217,7 +215,7 @@ export function WhatsAppChat() {
               </div>
             </div>
 
-            {/* Messages */}
+            {/* Mensajes */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-secondary/20">
               {messages.map((message) => (
                 <div
@@ -273,7 +271,7 @@ export function WhatsAppChat() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
+            {/* Entrada de texto */}
             <div className="p-4 border-t border-border bg-card">
               <form
                 onSubmit={(e) => {

@@ -95,14 +95,13 @@ export function GallerySection({ artist }: GallerySectionProps) {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedTattoo, setSelectedTattoo] = useState<Tattoo | null>(null)
 
-  // Map the artist's portfolio URLs to Mock Tattoos objects
   const dynamictattoos: Tattoo[] = artist.portfolio.map((imgUrl, i) => ({
     id: i + 1,
     image: imgUrl,
     title: `Obra ${i + 1}`,
-    category: "", // Remove default category so it doesn't show incorrect text
+    category: "", // Sin categoría por defecto
     description: `Diseño personalizado de tatuaje realizado por ${artist.name}.`,
-    likes: ((i * 37) % 400) + 150, // Deterministic likes to prevent hydration errors
+    likes: ((i * 37) % 400) + 150, // Likes fijos para evitar errores de hidratación
   }));
 
   const filteredTattoos = dynamictattoos.filter((tattoo) => {
@@ -112,7 +111,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
   return (
     <section id="galeria" className="py-24 relative overflow-hidden">
 
-      {/* Section header */}
+      {/* Encabezado de sección */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,7 +129,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
 
 
 
-        {/* Gallery grid */}
+        {/* Grilla de galería */}
         <motion.div
           layout
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
@@ -153,7 +152,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                {/* Overlay */}
+                {/* Superposición */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <p className="font-serif text-lg text-foreground mb-1">{tattoo.title}</p>
@@ -178,7 +177,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
         )}
       </div>
 
-      {/* Tattoo detail modal */}
+      {/* Modal de detalle */}
       <Dialog open={!!selectedTattoo} onOpenChange={() => setSelectedTattoo(null)}>
         <DialogContent
           className="max-w-4xl bg-card border-border p-0 overflow-hidden"

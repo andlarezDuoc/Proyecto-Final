@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-black flex flex-col md:flex-row">
-      {/* Sidebar for Desktop / Topbar for Mobile */}
+      {/* Barra lateral en escritorio / superior en móvil */}
       <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/10 bg-black/50 backdrop-blur-xl md:min-h-screen flex flex-col pt-6 z-20 sticky top-0">
         <div className="px-6 mb-8 flex items-center gap-3">
           <Droplet className="w-6 h-6 text-white" />
@@ -87,7 +87,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Área de contenido principal */}
       <main className="flex-1 relative max-w-7xl mx-auto w-full p-4 md:p-8">
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.05)_0,transparent_50%)] pointer-events-none" />
         <div className="relative z-10 w-full h-full">
@@ -95,7 +95,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </div>
       </main>
 
-      {/* Mobile Footer Actions (Logout/Profile) */}
+      {/* Acciones de pie de página móviles (Salir/Perfil) */}
       <div className="md:hidden border-t border-white/10 bg-black/50 backdrop-blur-xl p-4 flex justify-between gap-4 sticky bottom-0 z-20">
          <Link
             href={`/artist/${artistId}`}

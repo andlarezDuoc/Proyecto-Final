@@ -13,13 +13,11 @@ interface ArtistCardProps {
 }
 
 export function ArtistCard({ artist, index }: ArtistCardProps) {
-  // Use the first portfolio image as cover, fallback to avatar if none exists
+  // Portada: primer portafolio o avatar
   const coverImage = artist.portfolio && artist.portfolio.length > 0 ? artist.portfolio[0] : artist.avatar;
 
-  // Mock distance for the UI to match the requested design (deterministic)
+  // Distancia y reseñas calculadas de forma fija para la simulación
   const mockDistance = ((artist.name.length % 8) + 1.2).toFixed(1);
-  
-  // Mock review count (deterministic)
   const mockReviews = (artist.name.length * 11) % 150 + 30;
 
   return (
@@ -29,7 +27,7 @@ export function ArtistCard({ artist, index }: ArtistCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group flex flex-col bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:border-primary/50 transition-all duration-300"
     >
-      {/* Clickable Cover & Avatar Image to enter profile */}
+
       <Link href={`/artist/${artist.id}`} className="relative h-48 w-full bg-muted block cursor-pointer group/image overflow-hidden">
         <Image
           src={coverImage}
@@ -37,7 +35,7 @@ export function ArtistCard({ artist, index }: ArtistCardProps) {
           fill
           className="object-cover transition-transform duration-500 group-hover/image:scale-105"
         />
-        {/* Avatar overlapping */}
+
         <div className="absolute -bottom-6 left-6 rounded-full border-4 border-[#121212] overflow-hidden w-14 h-14 bg-muted z-10 transition-transform duration-500 group-hover/image:scale-110">
           <Image
             src={artist.avatar}
@@ -48,7 +46,7 @@ export function ArtistCard({ artist, index }: ArtistCardProps) {
         </div>
       </Link>
 
-      {/* Content */}
+
       <div className="flex flex-col flex-1 p-6 pt-10">
         <div className="flex justify-between items-start mb-1">
           <h3 className="font-serif text-xl font-bold text-foreground">
@@ -67,7 +65,7 @@ export function ArtistCard({ artist, index }: ArtistCardProps) {
           <span>{artist.location} • {mockDistance} km</span>
         </div>
 
-        {/* Styles tags */}
+
         <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
           {artist.styles.slice(0, 2).map((style, i) => (
             <span

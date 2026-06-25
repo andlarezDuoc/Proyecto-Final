@@ -50,18 +50,18 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
       setCvv("")
       setName("")
       setErrorMessage("")
-      // Generate a dynamic buy order number WI-XXXXXX
+      // Generar número de orden de compra dinámico
       const rand = Math.floor(100000 + Math.random() * 900000)
       setBuyOrder(`WI-${rand}`)
     }
   }, [isOpen])
 
-  // Detect card brand based on first digit
+  // Detectar marca de tarjeta según el primer dígito
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "")
     if (value.length > 16) value = value.slice(0, 16)
     
-    // Auto spacing
+    // Espaciado automático
     const parts = []
     for (let i = 0; i < value.length; i += 4) {
       parts.push(value.slice(i, i + 4))
@@ -78,7 +78,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
     }
   }
 
-  // Auto format MM/YY expiration date
+  // Formato automático de fecha MM/YY
   const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "")
     if (value.length > 4) value = value.slice(0, 4)
@@ -90,7 +90,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
     }
   }
 
-  // Handle CVV input
+
   const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "")
     if (value.length <= 4) {
@@ -128,7 +128,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
     setErrorMessage("")
     setState("processing")
 
-    // Realistic processing delay for card validation
+    // Demora de procesamiento simulado
     setTimeout(() => {
       setState("bank_auth")
     }, 2000)
@@ -141,7 +141,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
       if (success) {
         setState("success")
         
-        // Final screen delay before calling success callback
+
         setTimeout(() => {
           const authCode = Math.floor(100000 + Math.random() * 900000).toString()
           const transactionId = Math.floor(10000000 + Math.random() * 90000000).toString()
@@ -173,7 +173,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
           transition={{ duration: 0.3 }}
           className="w-full max-w-[460px] bg-[#f4f4f7] rounded-2xl shadow-2xl overflow-hidden text-slate-800 flex flex-col font-sans border border-slate-300"
         >
-          {/* Transbank Header */}
+          {/* Encabezado Transbank */}
           <div className="bg-[#e2231a] p-4 text-white flex justify-between items-center shadow-md">
             <div className="flex items-center gap-2">
               <span className="font-black tracking-tighter text-xl italic text-white flex items-center">
@@ -186,7 +186,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
             </div>
           </div>
 
-          {/* Commerce and Transaction Info */}
+          {/* Datos del comercio y transacción */}
           <div className="bg-white p-4 border-b border-slate-200 grid grid-cols-2 gap-2 text-xs">
             <div>
               <p className="text-slate-400 font-semibold uppercase tracking-wider text-[9px]">Comercio</p>
@@ -206,7 +206,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
             </div>
           </div>
 
-          {/* Interactive Screen States */}
+          {/* Estados interactivos de pantalla */}
           <div className="p-5 flex-1 min-h-[290px] flex flex-col justify-between">
             {state === "form" && (
               <form onSubmit={handleSubmitCard} className="space-y-4 flex-1 flex flex-col justify-between">
@@ -216,7 +216,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
                     Selecciona tu medio de pago
                   </h4>
 
-                  {/* Payment selection tabs */}
+                  {/* Pestañas de selección de pago */}
                   <div className="grid grid-cols-2 gap-2 mb-4 bg-slate-200/60 p-1.5 rounded-xl border border-slate-300">
                     <button
                       type="button"
@@ -248,7 +248,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
                     </div>
                   )}
 
-                  {/* Card Form */}
+                  {/* Formulario de tarjeta */}
                   <div className="space-y-3">
                     <div className="relative">
                       <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Número de Tarjeta</label>
@@ -310,7 +310,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
                   </div>
                 </div>
 
-                {/* Form Actions */}
+                {/* Acciones del formulario */}
                 <div className="pt-4 flex flex-col gap-2">
                   <button
                     type="submit"
@@ -475,7 +475,7 @@ export function WebpaySimulator({ isOpen, onClose, onSuccess, amount, serviceNam
             )}
           </div>
 
-          {/* Secure Footer badges */}
+          {/* Sellos de seguridad inferiores */}
           <div className="bg-slate-200 border-t border-slate-300/80 px-4 py-3 flex justify-between items-center text-[9px] text-slate-400">
             <div className="flex items-center gap-1">
               <span>Tecnología por</span>

@@ -8,7 +8,7 @@ export function Footer() {
     <footer id="contacto" className="bg-card border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
+          {/* Marca */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary via-accent to-chrome flex items-center justify-center">
@@ -51,7 +51,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick links */}
+          {/* Enlaces rápidos */}
           <div>
             <h3 className="font-serif text-lg font-bold text-foreground mb-6">
               Enlaces Rápidos
@@ -75,7 +75,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Servicios */}
           <div>
             <h3 className="font-serif text-lg font-bold text-foreground mb-6">
               Servicios
@@ -95,7 +95,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contacto */}
           <div>
             <h3 className="font-serif text-lg font-bold text-foreground mb-6">
               Contacto
@@ -129,7 +129,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Barra inferior */}
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
             {new Date().getFullYear()} Black Ink Tattoo. Todos los derechos reservados.

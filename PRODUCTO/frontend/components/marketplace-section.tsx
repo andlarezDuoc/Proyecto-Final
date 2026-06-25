@@ -86,10 +86,10 @@ export function MarketplaceSection() {
         
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* Left Sidebar */}
+          {/* Panel lateral izquierdo */}
           <div className="w-full lg:w-[300px] flex-shrink-0 flex flex-col gap-6">
             
-            {/* Filtros rápidos block */}
+            {/* Bloque de filtros rápidos */}
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -97,7 +97,7 @@ export function MarketplaceSection() {
             >
               <h3 className="font-serif text-2xl font-bold text-white mb-6">Filtros rápidos</h3>
               
-              {/* Ubicación */}
+              {/* Filtro por Ubicación */}
               <div className="mb-6">
                 <h4 className="text-sm font-bold text-white mb-3">Ubicación</h4>
                 <div className="space-y-3 max-h-48 overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -120,7 +120,7 @@ export function MarketplaceSection() {
                 </div>
               </div>
 
-              {/* Estilo */}
+              {/* Filtro por Estilo */}
               <div className="mb-6">
                 <h4 className="text-sm font-bold text-white mb-3">Estilo</h4>
                 <div className="space-y-3 max-h-48 overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -143,7 +143,7 @@ export function MarketplaceSection() {
                 </div>
               </div>
 
-              {/* Disponibilidad (UI only) */}
+              {/* Filtro por Disponibilidad (solo UI) */}
               <div className="mb-6">
                 <h4 className="text-sm font-bold text-white mb-3">Disponibilidad</h4>
                 <RadioGroup defaultValue="flexible" className="space-y-3">
@@ -163,7 +163,7 @@ export function MarketplaceSection() {
               </div>
 
 
-              {/* Botones de acción */}
+              {/* Botones de acción de filtros */}
               <div className="flex gap-3">
                 <Button onClick={applyFilters} className="flex-1 bg-white/10 hover:bg-white/20 text-white border-none rounded-md">
                   Aplicar
@@ -176,17 +176,17 @@ export function MarketplaceSection() {
 
           </div>
 
-          {/* Right Content Area */}
+          {/* Área de contenido principal */}
           <div className="flex-1">
             
-            {/* Header and View Toggle */}
+            {/* Encabezado */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
               <div className="w-full">
                 <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2">
                   Artistas
                 </h2>
 
-                {/* Search Bar */}
+                {/* Barra de búsqueda */}
                 <div className="relative w-full max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
                   <Input
@@ -201,7 +201,7 @@ export function MarketplaceSection() {
 
             </div>
 
-            {/* Loading state */}
+            {/* Estado de carga */}
             {loading ? (
               <div className="text-center py-20 bg-[#121212]/80 rounded-2xl border border-white/10 backdrop-blur-md">
                 <p className="text-white text-lg animate-pulse">Cargando artistas desde Supabase...</p>
@@ -231,7 +231,7 @@ export function MarketplaceSection() {
               </div>
             )}
 
-            {/* Pagination */}
+            {/* Paginación */}
             {filteredArtists.length > 0 && (
               <div className="mt-12 mb-8 flex flex-wrap justify-center items-center gap-2">
                 <Button variant="outline" className="border-white/10 bg-[#121212]/80 text-gray-300 hover:bg-white/10 hover:text-white rounded-md">

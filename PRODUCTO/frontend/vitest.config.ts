@@ -3,7 +3,7 @@ import path from 'path'
 
 export default defineConfig({
   test: {
-    environment: 'node', // We are testing utility functions and logic (no browser DOM needed for our logic tests)
+    environment: 'node', // Pruebas de lógica sin necesidad de DOM del navegador
     globals: true,
   },
   resolve: {

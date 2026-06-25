@@ -25,7 +25,7 @@ export default function DashboardPage() {
   const [artistId, setArtistId] = useState<string | null>(null)
   const [defaultArtistData, setDefaultArtistData] = useState<Artist | null>(null)
   
-  // Local state for the gallery to demonstrate CRUD operations visually
+  // Estado local del portafolio
   const [gallery, setGallery] = useState<string[]>([])
   const [isReady, setIsReady] = useState(false)
   
@@ -84,7 +84,7 @@ export default function DashboardPage() {
           console.log("No se encontró perfil de artista con UUID en la base de datos. Creando uno inicial...")
           
           const initialArtist = {
-            id: userId, // ID es el UUID real del usuario autenticado
+            id: userId, // ID del usuario autenticado
             name: localMatch ? localMatch.name : (session.user.user_metadata?.full_name || "Nuevo Artista"),
             email: session.user.email || "",
             location: localMatch ? localMatch.location : "Ciudad",

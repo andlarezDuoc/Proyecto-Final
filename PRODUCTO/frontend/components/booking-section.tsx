@@ -64,7 +64,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
             sessionStorage.removeItem("booking_should_resume")
             sessionStorage.removeItem("booking_selected_service")
             
-            // Programmatic smooth scroll directly to the booking section!
+            // Desplazamiento suave hasta la sección de reservas
             setTimeout(() => {
               const element = document.getElementById("agendar")
               if (element) {
@@ -88,7 +88,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [step, setStep] = useState(1)
   
-  // Payment Simulator states
+  // Estados del simulador de Webpay
   const [isWebpayOpen, setIsWebpayOpen] = useState(false)
   const [paymentDetails, setPaymentDetails] = useState<{
     cardType: string
@@ -124,7 +124,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const day = date.getDay()
-    return date >= today && day !== 0 // Sunday closed
+    return date >= today && day !== 0 // Domingo cerrado
   }
 
   const formatDate = (date: Date) => {
@@ -178,7 +178,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
   const handlePaymentSuccess = (details: typeof paymentDetails) => {
     setPaymentDetails(details)
     setIsWebpayOpen(false)
-    setStep(4) // Move to confirmation ticket
+    setStep(4) // Ir al comprobante de reserva
   }
 
   const handlePrintReceipt = () => {
@@ -195,7 +195,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
 
   return (
     <section id="agendar" className="py-24 relative overflow-hidden bg-transparent print:p-0 print:bg-white print:text-black">
-      {/* Background decoration (hidden on print) */}
+      {/* Decoración de fondo (oculto al imprimir) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-3xl print:hidden" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -213,7 +213,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
           </p>
         </motion.div>
 
-        {/* Progress steps (hidden on print) */}
+        {/* Pasos de progreso (oculto al imprimir) */}
         <div className="flex items-center justify-center mb-12 print:hidden">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
@@ -239,7 +239,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
           ))}
         </div>
 
-        {/* Form container */}
+        {/* Contenedor del formulario */}
         <div className="bg-black/85 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
           
           {showLoginSuccess && (
@@ -249,7 +249,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </div>
           )}
 
-          {/* Step 1: Select Service */}
+          {/* Paso 1: Seleccionar Servicio */}
           {step === 1 && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -324,7 +324,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </motion.div>
           )}
 
-          {/* Step 2: Calendar */}
+          {/* Paso 2: Calendario y Hora */}
           {step === 2 && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -336,7 +336,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                 <span className="text-white mr-1 text-3xl">2.</span> Selecciona fecha y hora
               </h3>
               <div className="grid lg:grid-cols-2 gap-8">
-                {/* Calendar */}
+                {/* Calendario */}
                 <div className="bg-black/30 p-5 rounded-2xl border border-white/10">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-serif text-xl font-bold text-white capitalize">
@@ -388,7 +388,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                   </div>
                 </div>
 
-                {/* Time slots */}
+                {/* Bloques de horas */}
                 <div className="bg-black/30 p-5 rounded-2xl border border-white/10 flex flex-col justify-between">
                   <div>
                     <h3 className="font-serif text-xl font-bold text-white mb-4 flex items-center gap-1.5">
@@ -434,7 +434,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </motion.div>
           )}
 
-          {/* Step 3: Confirmation Summary & Payment */}
+          {/* Paso 3: Resumen de Confirmación y Pago */}
           {step === 3 && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -446,7 +446,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                 <span className="text-white mr-1 text-3xl">3.</span> Resumen y Pago de Garantía
               </h3>
 
-              {/* Booking breakdown */}
+              {/* Desglose de la reserva */}
               <div className="bg-black/30 rounded-2xl p-6 space-y-4 border border-white/10 text-white">
                 <div className="flex justify-between items-center pb-3 border-b border-white/10">
                   <div>
@@ -491,7 +491,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                 </div>
               </div>
 
-              {/* Booking confirmation action */}
+              {/* Acción de pago */}
               <div className="space-y-4 pt-4">
                 <p className="text-xs text-muted-foreground text-center">
                   Para asegurar tu cupo de cita en la agenda de {artist.name}, es requerido el pago del abono vía Transbank. El pago es simulado y totalmente seguro.
@@ -508,17 +508,17 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </motion.div>
           )}
 
-          {/* Step 4: Success Ticket / Receipt */}
+          {/* Paso 4: Comprobante de éxito */}
           {step === 4 && paymentDetails && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="max-w-xl mx-auto py-4"
             >
-              {/* Receipt Visual design */}
+              {/* Comprobante */}
               <div className="bg-white text-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 relative print:border-none print:shadow-none">
                 
-                {/* Header decor */}
+                {/* Encabezado */}
                 <div className="bg-[#1e1e1e] p-6 text-white text-center relative">
                   <div className="absolute top-4 right-4 text-[9px] bg-green-500 text-white font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shadow">
                     Pago Aprobado
@@ -527,7 +527,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                   <p className="text-[10px] text-slate-400 tracking-widest uppercase">Comprobante Oficial de Reserva</p>
                 </div>
 
-                {/* Ticket Details */}
+                {/* Detalles */}
                 <div className="p-6 space-y-6">
                   <div className="flex flex-col items-center justify-center border-b border-dashed border-slate-300 pb-5 text-center">
                     <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
@@ -537,7 +537,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                     <p className="text-xs text-slate-400 mt-0.5">Tu reserva ha sido ingresada en el sistema.</p>
                   </div>
 
-                  {/* Transaction core breakdown */}
+                  {/* Desglose de la transacción */}
                   <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-xs border-b border-dashed border-slate-300 pb-5">
                     <div>
                       <p className="text-slate-400 font-semibold uppercase tracking-wider text-[9px]">Tatuador</p>
@@ -563,7 +563,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                     )}
                   </div>
 
-                  {/* Financial Receipts details */}
+                  {/* Detalles financieros */}
                   <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs space-y-2">
                     <p className="font-black text-[10px] text-slate-400 uppercase tracking-widest mb-1">Detalles de la Transacción</p>
                     <div className="flex justify-between">
@@ -598,7 +598,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                     </div>
                   </div>
                   
-                  {/* Decorative pseudo-barcode */}
+                  {/* Código de barras decorativo */}
                   <div className="flex flex-col items-center justify-center pt-2">
                     <div className="flex items-center h-8 gap-0.5 opacity-60">
                       {[1,3,2,1,4,2,3,1,1,2,4,3,1,2,1,3,2,4,1,3,2,1,1,4,2,1,3].map((w, i) => (
@@ -614,7 +614,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
                 </div>
               </div>
 
-              {/* Action buttons (hidden on print) */}
+              {/* Botones de acción (ocultos al imprimir) */}
               <div className="mt-6 flex flex-col sm:flex-row gap-3 print:hidden">
                 <Button
                   className="flex-1 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 py-6 rounded-2xl font-bold flex items-center justify-center gap-1.5 cursor-pointer"
@@ -633,7 +633,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
             </motion.div>
           )}
 
-          {/* Navigation buttons (hidden on print, hidden on Step 4) */}
+          {/* Botones de navegación (ocultos al imprimir o en paso 4) */}
           {step < 4 && (
             <div className="flex justify-between mt-8 pt-6 border-t border-white/10 print:hidden">
               <Button
@@ -661,7 +661,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
         </div>
       </div>
 
-      {/* Webpay Simulator Dialog / Modal */}
+      {/* Modal del simulador Webpay */}
       <WebpaySimulator
         isOpen={isWebpayOpen}
         onClose={() => setIsWebpayOpen(false)}

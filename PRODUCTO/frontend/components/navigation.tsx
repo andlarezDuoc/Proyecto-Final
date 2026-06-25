@@ -39,11 +39,11 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [userRole, setUserRole] = useState<string | null>(null)
 
-  // Scroll Spy logic
+  // Lógica de Scroll Spy
   const pathname = usePathname()
   const [activeSection, setActiveSection] = useState<string>("")
 
-  // Determine sections based on page
+  // Determinar secciones según la página
   const getSectionsForPage = () => {
     if (pathname === "/") {
       return [
@@ -66,7 +66,7 @@ export function Navigation() {
   const sections = getSectionsForPage()
 
   useEffect(() => {
-    // Check if user is logged in using Supabase
+    // Verificar sesión con Supabase
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user?.user_metadata?.role) {
@@ -76,7 +76,7 @@ export function Navigation() {
     
     checkSession()
 
-    // Listen for auth changes (login/logout)
+    // Escuchar cambios de autenticación
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user?.user_metadata?.role) {
         setUserRole(session.user.user_metadata.role)
@@ -95,14 +95,14 @@ export function Navigation() {
     }
   }, [])
 
-  // Scrollspy effect
+  // Efecto Scrollspy
   useEffect(() => {
     if (sections.length === 0) return
 
     const handleScrollSpy = () => {
-      const scrollPosition = window.scrollY + 120 // Offset to trigger slightly before reaching the top
+      const scrollPosition = window.scrollY + 120 // Margen antes de llegar al tope
 
-      // Check if at the bottom of the page
+      // Verificar si llegó al final de la página
       const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100
       if (isAtBottom) {
         setActiveSection(sections[sections.length - 1].id)
@@ -125,7 +125,7 @@ export function Navigation() {
     }
 
     window.addEventListener("scroll", handleScrollSpy)
-    handleScrollSpy() // Run once initially
+    handleScrollSpy() // Ejecutar al inicio
 
     return () => window.removeEventListener("scroll", handleScrollSpy)
   }, [sections])
@@ -133,7 +133,7 @@ export function Navigation() {
   const handleNavClick = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      const offset = 100 // Main header height offset
+      const offset = 100 // Ajuste de altura de cabecera
       const elementPosition = element.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.scrollY - offset
 
@@ -146,7 +146,7 @@ export function Navigation() {
 
   return (
     <>
-      {/* TOP HEADER */}
+      {/* Cabecera superior */}
       <nav
         className={`fixed top-0 left-0 right-0 h-20 z-50 transition-all duration-500 border-b ${
           scrolled || sections.length > 0
@@ -155,7 +155,7 @@ export function Navigation() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-          {/* Logo only on the left side of top bar */}
+          {/* Logo a la izquierda de la barra superior */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary via-accent to-chrome flex items-center justify-center">
               <span className="font-serif text-lg font-bold text-background">B</span>
@@ -165,7 +165,7 @@ export function Navigation() {
             </span>
           </Link>
 
-          {/* Right side: Login option with enlarged font */}
+          {/* Lado derecho: opción de login */}
           <div className="hidden md:flex items-center">
             {userRole ? (
               <button 
@@ -201,7 +201,7 @@ export function Navigation() {
             )}
           </div>
 
-          {/* Mobile hamburger button */}
+          {/* Botón hamburguesa móvil */}
           <button
             className="md:hidden p-2 text-foreground"
             onClick={() => setIsOpen(!isOpen)}
@@ -211,7 +211,7 @@ export function Navigation() {
           </button>
         </div>
 
-        {/* Mobile menu drawer */}
+        {/* Menú móvil desplegable */}
         <div
           className={`md:hidden absolute top-20 left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border transition-all duration-300 ${
             isOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -286,7 +286,7 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* LEFT FIXED SIDEBAR (Desktop only) */}
+      {/* Menú lateral izquierdo (Solo escritorio) */}
       {sections.length > 0 && (
         <aside className="hidden md:flex flex-col fixed top-20 left-0 bottom-0 w-64 bg-black/60 backdrop-blur-xl border-r border-white/5 z-30 p-6 overflow-y-auto no-scrollbar">
           <div className="flex flex-col gap-3">

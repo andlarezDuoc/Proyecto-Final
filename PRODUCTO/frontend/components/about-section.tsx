@@ -12,13 +12,12 @@ interface AboutSectionProps {
 }
 
 export function AboutSection({ artist }: AboutSectionProps) {
-  // Find mock artist tattoos if it's missing from DB stats
-  const mockArtist = artists.find(a => a.id === artist.id || a.email.toLowerCase() === artist.email?.toLowerCase())
+  const mockArtist = artists.find(a => a.id === artist.id || (a.email && a.email.toLowerCase() === artist.email?.toLowerCase()))
   const tattoosCount = artist.stats?.tattoos || mockArtist?.stats?.tattoos || (artist.stats?.completed ? artist.stats.completed + "+" : "300+")
 
   return (
     <section id="sobre-mi" className="pt-10 pb-20 bg-secondary/30 relative overflow-hidden">
-      {/* Blurred background decoration */}
+
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] -translate-y-1/2 opacity-20 blur-3xl">
         <Image
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ae0gsgpl6qYo8q2J3AhbNCrW5q6pJD.png"
@@ -44,7 +43,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Image side */}
+
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -61,7 +60,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
             </div>
 
-            {/* Floating stats cards */}
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +81,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
 
           </motion.div>
 
-          {/* Content side */}
+
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -113,7 +112,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
               {artist.fullBio}
             </p>
 
-            {/* Specialties */}
+
             <div className="flex flex-wrap gap-2 mb-8">
               {artist.styles.map((spec) => (
                 <span
@@ -125,7 +124,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
               ))}
             </div>
 
-            {/* Stats row */}
+
             <div className="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl bg-secondary/50 border border-border">
               <div className="text-center">
                 <Clock className="w-5 h-5 text-white mx-auto mb-2" />
@@ -144,7 +143,7 @@ export function AboutSection({ artist }: AboutSectionProps) {
               </div>
             </div>
 
-            {/* CTA */}
+
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="outline" className="border-border flex items-center justify-center gap-2 flex-1" asChild>
                 <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">

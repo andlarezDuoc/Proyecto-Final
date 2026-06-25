@@ -21,7 +21,7 @@ const initialReports = [
     clientName: "Andrea Muñoz",
     date: "Ayer, 18:30",
     status: "new",
-    image: "https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28", // Fake healed tattoo url
+    image: "https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28", // URL de foto de prueba
     notes: "¡Hola! Han pasado 3 meses desde la sesión. El diseño curó perfecto, no perdió nada de color y las líneas siguen súper nítidas. Muy feliz.",
     couponSent: false
   },

@@ -29,9 +29,9 @@ export function HeroSection() {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* 100% Transparent background to seamlessly show the fixed silver tattoo image from page.tsx */}
 
-      {/* Main content - sharp and clear */}
+
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -100,14 +100,14 @@ export function HeroSection() {
                 </AnimatePresence>
               </div>
 
-              {/* Decorative glowing frames removed for a cleaner floating card look */}
 
-              {/* Floating images removed as requested */}
+
+
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Indicador de desplazamiento */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

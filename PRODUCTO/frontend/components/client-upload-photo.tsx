@@ -30,7 +30,6 @@ export function ClientUploadPhoto({ artist }: ClientUploadPhotoProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    // Check if logged in as client
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user?.user_metadata?.role === 'client') {
@@ -115,7 +114,7 @@ export function ClientUploadPhoto({ artist }: ClientUploadPhotoProps) {
                 </DialogHeader>
 
                 <div className="space-y-6">
-                  {/* Upload Dropzone */}
+                  {/* Zona de carga de fotos */}
                   {!previewUrl ? (
                     <div 
                       onClick={() => fileInputRef.current?.click()}
@@ -147,7 +146,7 @@ export function ClientUploadPhoto({ artist }: ClientUploadPhotoProps) {
                     </div>
                   )}
 
-                  {/* Notes input */}
+                  {/* Campo de notas */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-zinc-300">¿Tienes alguna observación?</label>
                     <textarea 
@@ -158,7 +157,7 @@ export function ClientUploadPhoto({ artist }: ClientUploadPhotoProps) {
                     />
                   </div>
 
-                  {/* Actions */}
+                  {/* Botones de acción */}
                   <div className="flex justify-end gap-3 pt-2">
                     <Button 
                       onClick={handleSend}

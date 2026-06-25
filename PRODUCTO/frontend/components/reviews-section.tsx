@@ -27,7 +27,6 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
   const [newComment, setNewComment] = useState("")
 
   useEffect(() => {
-    // Check if logged in as client
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user?.user_metadata?.role === 'client') {
@@ -36,12 +35,12 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
     }
     checkSession()
 
-    // Load reviews from local storage
+    // Cargar reseñas desde localStorage
     const stored = localStorage.getItem(`reviews_${artistId}`)
     if (stored) {
       setReviews(JSON.parse(stored))
     } else {
-      // Mock some initial reviews
+      // Reseñas iniciales de prueba
       const mockReviews = [
         {
           id: "1",
@@ -49,7 +48,7 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
           author: "Cliente Anónimo",
           rating: 5,
           comment: `¡Excelente trabajo! Me encantó cómo quedó mi tatuaje con ${artistName}.`,
-          date: "2024-01-15T12:00:00.000Z" // Deterministic date to prevent hydration errors
+          date: "2024-01-15T12:00:00.000Z" // Fecha fija para evitar errores de hidratación
         }
       ]
       setReviews(mockReviews)
@@ -97,7 +96,7 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
           </p>
         </motion.div>
 
-        {/* Add Review Form */}
+        {/* Formulario para agregar reseña */}
         <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl">
           {isClient ? (
             <form onSubmit={handleSubmit}>
@@ -141,7 +140,7 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
           )}
         </div>
 
-        {/* Reviews List */}
+        {/* Lista de reseñas */}
         <div className="space-y-6">
           {reviews.length === 0 ? (
             <p className="text-zinc-500 text-center py-8">Aún no hay reseñas para este artista.</p>

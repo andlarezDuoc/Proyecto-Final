@@ -20,7 +20,7 @@ describe('cn utility helper', () => {
   })
 
   it('resolves conflicting tailwind classes using twMerge', () => {
-    // p-4 and p-6 are conflicting padding values. twMerge should resolve to p-6
+    // twMerge debe resolver valores en conflicto de Tailwind (ej: p-4 vs p-6)
     const result = cn('p-4', 'p-6')
     expect(result).toBe('p-6')
   })
