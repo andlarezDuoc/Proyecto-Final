@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Linking, Share } from 'react-native';
 import { Artist } from '../lib/data/artists';
 import { ArrowLeft, Star, Clock, Heart, Award, Globe, MapPin, Phone, Mail, Share2, Calendar } from 'lucide-react-native';
+import { getFullImageUrl } from '../lib/utils';
 
 interface ArtistDetailScreenProps {
   artist: Artist;
@@ -47,7 +48,7 @@ export function ArtistDetailScreen({ artist, onBack, onBook }: ArtistDetailScree
         {/* Sección de perfil principal */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Image source={{ uri: artist.avatar }} style={styles.avatarImage} />
+            <Image source={{ uri: getFullImageUrl(artist.avatar) }} style={styles.avatarImage} />
             <View style={styles.badgeContainer}>
               <Award size={14} color="#000" />
               <Text style={styles.badgeText}>{artist.experience}+ Años</Text>
@@ -102,7 +103,7 @@ export function ArtistDetailScreen({ artist, onBack, onBook }: ArtistDetailScree
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.galleryScroll}>
             {artist.portfolio.map((img, i) => (
               <View key={i} style={styles.portfolioItem}>
-                <Image source={{ uri: img }} style={styles.portfolioImage} />
+                <Image source={{ uri: getFullImageUrl(img) }} style={styles.portfolioImage} />
                 <View style={styles.portfolioTitleOverlay}>
                   <Text style={styles.portfolioTitleText}>Obra {i + 1}</Text>
                 </View>

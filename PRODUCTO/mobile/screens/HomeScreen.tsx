@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image,
 import { supabase } from '../lib/supabase';
 import { artists as fallbackArtists, Artist, ArtistStyle, Location } from '../lib/data/artists';
 import { Search, Star, MapPin, SlidersHorizontal, RefreshCw } from 'lucide-react-native';
+import { getFullImageUrl } from '../lib/utils';
 
 interface HomeScreenProps {
   onSelectArtist: (artistId: string) => void;
@@ -82,9 +83,9 @@ export function HomeScreen({ onSelectArtist, onBookArtist }: HomeScreenProps) {
           onPress={() => onSelectArtist(item.id)}
           activeOpacity={0.8}
         >
-          <Image source={{ uri: coverImage }} style={styles.coverImage} />
+          <Image source={{ uri: getFullImageUrl(coverImage) }} style={styles.coverImage} />
           <View style={styles.avatarBorder}>
-            <Image source={{ uri: item.avatar }} style={styles.avatarImage} />
+            <Image source={{ uri: getFullImageUrl(item.avatar) }} style={styles.avatarImage} />
           </View>
         </TouchableOpacity>
 

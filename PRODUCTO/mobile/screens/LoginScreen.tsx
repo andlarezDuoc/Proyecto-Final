@@ -11,6 +11,8 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [role, setRole] = useState<'client' | 'artist'>('client');
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -19,27 +21,81 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
       return;
     }
 
+    if (isRegistering && !fullName.trim()) {
+      Alert.alert('Campo requerido', 'Por favor ingresa tu nombre completo.');
+      return;
+    }
+
     setLoading(true);
     if (isRegistering) {
-      // Registro de cliente
+      // Registro de cliente o artista en Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            role: 'client', // Rol obligatorio requerido por RLS
+            role: role,
+            full_name: fullName,
           },
         },
       });
 
       if (error) {
         Alert.alert('Error de registro', error.message);
-      } else {
-        Alert.alert(
-          'Registro exitoso',
-          'Tu cuenta ha sido creada. Puedes iniciar sesión ahora.'
-        );
-        setIsRegistering(false);
+      } else if (data?.user) {
+        try {
+          // 2. Insertamos el perfil en la tabla pública profiles
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: data.user.id,
+                email: email,
+                role: role,
+                full_name: fullName,
+              }
+            ]);
+
+          if (profileError) {
+            console.error('Error insertando en profiles:', profileError);
+            throw new Error(`profiles: ${profileError.message}`);
+          }
+
+          // 3. Si el rol es artista, agregar a la tabla artists
+          if (role === 'artist') {
+            const { error: artistError } = await supabase
+              .from('artists')
+              .insert([
+                {
+                  id: data.user.id,
+                  name: fullName,
+                  email: email,
+                  location: "Santiago Centro",
+                  styles: [],
+                  portfolio: []
+                }
+              ]);
+
+            if (artistError) {
+              console.error('Error insertando en artists:', artistError);
+              throw new Error(`artists: ${artistError.message}`);
+            }
+          }
+
+          Alert.alert(
+            'Registro exitoso',
+            'Tu cuenta ha sido creada. Puedes iniciar sesión ahora.'
+          );
+          setIsRegistering(false);
+          setFullName('');
+          setEmail('');
+          setPassword('');
+        } catch (dbError: any) {
+          Alert.alert(
+            'Registro parcial',
+            `Se creó la cuenta pero hubo un error de base de datos: ${dbError.message}`
+          );
+        }
       }
     } else {
       // Inicio de sesión
@@ -67,16 +123,31 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
         </View>
 
         <Text style={styles.title}>
-          {isRegistering ? 'Crear Cuenta Cliente' : 'Iniciar Sesión'}
+          {isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}
         </Text>
         
         <Text style={styles.subtitle}>
           {isRegistering 
-            ? 'Regístrate para agendar citas y hacer seguimiento a tu cicatrización.' 
-            : 'Accede a tu cuenta de cliente de Black Ink.'}
+            ? 'Regístrate para agendar citas y gestionar tatuajes en Black Ink.' 
+            : 'Accede a tu cuenta de cliente o tatuador de Black Ink.'}
         </Text>
 
         <View style={styles.inputGroup}>
+          {isRegistering && (
+            <View style={styles.inputWrapper}>
+              <User size={18} color="#888" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre completo"
+                placeholderTextColor="#666"
+                value={fullName}
+                onChangeText={setFullName}
+                autoCapitalize="words"
+                autoCorrect={false}
+              />
+            </View>
+          )}
+
           <View style={styles.inputWrapper}>
             <Mail size={18} color="#888" style={styles.inputIcon} />
             <TextInput
@@ -104,6 +175,30 @@ export function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
               autoCorrect={false}
             />
           </View>
+
+          {isRegistering && (
+            <View style={styles.roleContainer}>
+              <Text style={styles.roleLabel}>Registrarse como:</Text>
+              <View style={styles.roleButtons}>
+                <TouchableOpacity
+                  style={[styles.roleButton, role === 'client' && styles.roleButtonActive]}
+                  onPress={() => setRole('client')}
+                >
+                  <Text style={[styles.roleButtonText, role === 'client' && styles.roleButtonTextActive]}>
+                    Cliente
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.roleButton, role === 'artist' && styles.roleButtonActive]}
+                  onPress={() => setRole('artist')}
+                >
+                  <Text style={[styles.roleButtonText, role === 'artist' && styles.roleButtonTextActive]}>
+                    Tatuador
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
 
         <TouchableOpacity 
@@ -235,5 +330,40 @@ const styles = StyleSheet.create({
     color: '#888888',
     fontSize: 13,
     textDecorationLine: 'underline',
+  },
+  roleContainer: {
+    marginTop: 8,
+    width: '100%',
+  },
+  roleLabel: {
+    color: '#888888',
+    fontSize: 13,
+    marginBottom: 8,
+  },
+  roleButtons: {
+    flexDirection: 'row',
+    backgroundColor: '#09090b',
+    borderWidth: 1,
+    borderColor: '#222222',
+    borderRadius: 12,
+    padding: 4,
+    height: 48,
+  },
+  roleButton: {
+    flex: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  roleButtonActive: {
+    backgroundColor: '#ffffff',
+  },
+  roleButtonText: {
+    color: '#888888',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  roleButtonTextActive: {
+    color: '#000000',
   },
 });

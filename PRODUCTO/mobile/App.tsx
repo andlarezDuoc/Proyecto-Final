@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, StatusBar, Alert, Platform, ActivityIndicator } from 'react-native';
 import { supabase } from './lib/supabase';
 import { artists, Artist } from './lib/data/artists';
 import { HomeScreen } from './screens/HomeScreen';
@@ -16,14 +16,21 @@ export default function App() {
   // Estado de sesión
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [loadingSession, setLoadingSession] = useState(true);
 
   useEffect(() => {
     // Verificar sesión inicial
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUserEmail(session.user.email || '');
-        setUserRole(session.user.user_metadata?.role || 'client');
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setUserEmail(session.user.email || '');
+          setUserRole(session.user.user_metadata?.role || 'client');
+        }
+      } catch (err) {
+        console.warn('Error checking initial session:', err);
+      } finally {
+        setLoadingSession(false);
       }
     };
     checkSession();
@@ -37,6 +44,7 @@ export default function App() {
         setUserEmail(null);
         setUserRole(null);
       }
+      setLoadingSession(false);
     });
 
     return () => {
@@ -162,10 +170,39 @@ export default function App() {
     }
   };
 
+  if (loadingSession) {
+    return (
+      <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <ActivityIndicator size="large" color="#ffffff" />
+      </SafeAreaView>
+    );
+  }
+
+  if (!userEmail) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <LoginScreen 
+          onLoginSuccess={(email, role) => {
+            setUserEmail(email);
+            setUserRole(role);
+            setCurrentScreen('home');
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       
+      {/* Cabecera de la Aplicación */}
+      <View style={styles.appHeader}>
+        <Text style={styles.appHeaderTitle}>BLACK INK TATTOO</Text>
+      </View>
+
       {/* Contenido principal */}
       <View style={styles.content}>
         {renderScreen()}
@@ -194,9 +231,7 @@ export default function App() {
           onPress={() => setCurrentScreen('account')}
         >
           <User size={20} color={currentScreen === 'account' ? '#fff' : '#666'} />
-          <Text style={[styles.tabLabel, currentScreen === 'account' && styles.tabLabelActive]}>
-            {userEmail ? 'Perfil' : 'Ingresar'}
-          </Text>
+          <Text style={[styles.tabLabel, currentScreen === 'account' && styles.tabLabelActive]}>Perfil</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -207,6 +242,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+  },
+  appHeader: {
+    height: 56,
+    backgroundColor: '#09090b',
+    borderBottomWidth: 1,
+    borderColor: '#18181b',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: Platform.OS === 'ios' ? 0 : 4, // Ajuste sutil para barra de estado
+  },
+  appHeaderTitle: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    fontFamily: Platform.OS === 'ios' ? 'Cinzel' : 'normal',
   },
   content: {
     flex: 1,
