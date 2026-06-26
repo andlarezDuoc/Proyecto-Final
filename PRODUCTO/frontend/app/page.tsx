@@ -23,7 +23,7 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0 bg-black/40" />
 
       {/* Contenido principal */}
-      <main className="relative z-10 min-h-screen md:pl-64">
+      <main className="relative z-10 min-h-screen md:pl-52">
         <Navigation />
         <HeroSection />
         <MarketplaceSection />

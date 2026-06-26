@@ -109,7 +109,7 @@ export function GallerySection({ artist }: GallerySectionProps) {
   })
 
   return (
-    <section id="galeria" className="py-24 relative overflow-hidden">
+    <section id="galeria" className="py-12 relative overflow-hidden">
 
       {/* Encabezado de sección */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -117,12 +117,12 @@ export function GallerySection({ artist }: GallerySectionProps) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-2">
             Portafolio de {artist.name.split(' ')[0]}
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
             Explora mi colección de trabajos realizados. Cada tatuaje es único y cuenta una historia.
           </p>
         </motion.div>

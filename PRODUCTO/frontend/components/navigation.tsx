@@ -288,8 +288,8 @@ export function Navigation() {
 
       {/* Menú lateral izquierdo (Solo escritorio) */}
       {sections.length > 0 && (
-        <aside className="hidden md:flex flex-col fixed top-20 left-0 bottom-0 w-64 bg-black/60 backdrop-blur-xl border-r border-white/5 z-30 p-6 overflow-y-auto no-scrollbar">
-          <div className="flex flex-col gap-3">
+        <aside className="hidden md:flex flex-col fixed top-20 left-0 bottom-0 w-52 bg-black/60 backdrop-blur-xl border-r border-white/5 z-30 p-4 overflow-y-auto no-scrollbar">
+          <div className="flex flex-col gap-2.5">
             {sections.map((section) => {
               const isActive = activeSection === section.id
               const Icon = getIconForSection(section.id)
@@ -298,13 +298,13 @@ export function Navigation() {
                 <button
                   key={section.id}
                   onClick={() => handleNavClick(section.id)}
-                  className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 font-bold text-base uppercase tracking-wider cursor-pointer group border-l-4 ${
+                  className={`flex items-center gap-3.5 px-3 py-2.5 rounded-lg transition-all duration-300 font-bold text-xs uppercase tracking-wider cursor-pointer group border-l-2 ${
                     isActive
-                      ? "bg-white/10 text-white border-white pl-3"
+                      ? "bg-white/10 text-white border-white pl-2"
                       : "text-zinc-400 hover:text-white hover:bg-white/5 border-transparent"
                   }`}
                 >
-                  <Icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${
+                  <Icon className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
                     isActive ? "text-white" : "text-zinc-500 group-hover:text-white"
                   }`} />
                   <span>{section.label}</span>
