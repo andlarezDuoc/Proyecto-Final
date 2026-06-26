@@ -80,24 +80,24 @@ export function ReviewsSection({ artistId, artistName }: { artistId: string, art
   if (!isLoaded) return null;
 
   return (
-    <section id="resenas" className="py-24 relative overflow-hidden bg-zinc-950 border-t border-zinc-900">
+    <section id="resenas" className="py-12 relative overflow-hidden bg-zinc-950 border-t border-zinc-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="mb-8"
         >
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
             Reseñas de Clientes
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Conoce la experiencia de otros clientes con {artistName}.
           </p>
         </motion.div>
 
         {/* Formulario para agregar reseña */}
-        <div className="mb-12 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl">
+        <div className="mb-8 bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-xl">
           {isClient ? (
             <form onSubmit={handleSubmit}>
               <h3 className="text-xl font-bold text-white mb-4">Deja tu reseña</h3>

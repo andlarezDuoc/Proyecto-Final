@@ -79,18 +79,18 @@ export function LocationSection({ artist }: LocationSectionProps = {}) {
   ]
 
   return (
-    <section id="ubicacion" className="py-24 bg-secondary/30 relative">
+    <section id="ubicacion" className="py-12 bg-secondary/30 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground mb-2">
             Encuéntranos
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
             Visítanos en nuestro estudio ubicado en el corazón de Providencia.
           </p>
         </motion.div>

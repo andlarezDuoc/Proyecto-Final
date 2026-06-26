@@ -81,28 +81,28 @@ export function MarketplaceSection() {
   };
 
   return (
-    <section id="artistas" className="py-24 relative min-h-screen">
+    <section id="artistas" className="py-12 relative min-h-screen">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="flex flex-col lg:flex-row gap-8">
           
           {/* Panel lateral izquierdo */}
-          <div className="w-full lg:w-[300px] flex-shrink-0 flex flex-col gap-6">
+          <div className="w-full lg:w-[230px] flex-shrink-0 flex flex-col gap-4">
             
             {/* Bloque de filtros rápidos */}
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl"
+              className="bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-xl"
             >
-              <h3 className="font-serif text-2xl font-bold text-white mb-6">Filtros rápidos</h3>
+              <h3 className="font-serif text-lg font-bold text-white mb-4">Filtros rápidos</h3>
               
               {/* Filtro por Ubicación */}
-              <div className="mb-6">
-                <h4 className="text-sm font-bold text-white mb-3">Ubicación</h4>
-                <div className="space-y-3 max-h-48 overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="mb-4">
+                <h4 className="text-xs font-bold text-zinc-300 mb-2">Ubicación</h4>
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {allLocations.map((loc) => (
-                    <div key={loc} className="flex items-center space-x-3">
+                    <div key={loc} className="flex items-center space-x-2.5">
                       <Checkbox 
                         id={`loc-${loc}`} 
                         checked={pendingLocations.includes(loc)}
@@ -110,9 +110,9 @@ export function MarketplaceSection() {
                           if (checked) setPendingLocations([...pendingLocations, loc]);
                           else setPendingLocations(pendingLocations.filter(l => l !== loc));
                         }}
-                        className="border-white/30 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="border-white/30 data-[state=checked]:bg-white data-[state=checked]:text-black w-4 h-4"
                       />
-                      <label htmlFor={`loc-${loc}`} className="text-sm font-medium leading-none text-gray-300 cursor-pointer">
+                      <label htmlFor={`loc-${loc}`} className="text-xs font-medium leading-none text-gray-300 cursor-pointer">
                         {loc}
                       </label>
                     </div>
@@ -121,11 +121,11 @@ export function MarketplaceSection() {
               </div>
 
               {/* Filtro por Estilo */}
-              <div className="mb-6">
-                <h4 className="text-sm font-bold text-white mb-3">Estilo</h4>
-                <div className="space-y-3 max-h-48 overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="mb-4">
+                <h4 className="text-xs font-bold text-zinc-300 mb-2">Estilo</h4>
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {allStyles.map((style) => (
-                    <div key={style} className="flex items-center space-x-3">
+                    <div key={style} className="flex items-center space-x-2.5">
                       <Checkbox 
                         id={`style-${style}`} 
                         checked={pendingStyles.includes(style)}
@@ -133,9 +133,9 @@ export function MarketplaceSection() {
                           if (checked) setPendingStyles([...pendingStyles, style]);
                           else setPendingStyles(pendingStyles.filter(s => s !== style));
                         }}
-                        className="border-white/30 data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="border-white/30 data-[state=checked]:bg-white data-[state=checked]:text-black w-4 h-4"
                       />
-                      <label htmlFor={`style-${style}`} className="text-sm font-medium leading-none text-gray-300 cursor-pointer">
+                      <label htmlFor={`style-${style}`} className="text-xs font-medium leading-none text-gray-300 cursor-pointer">
                         {style}
                       </label>
                     </div>
@@ -144,32 +144,31 @@ export function MarketplaceSection() {
               </div>
 
               {/* Filtro por Disponibilidad (solo UI) */}
-              <div className="mb-6">
-                <h4 className="text-sm font-bold text-white mb-3">Disponibilidad</h4>
-                <RadioGroup defaultValue="flexible" className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="hoy" id="disp-hoy" className="border-white/30 text-white fill-white" />
-                    <label htmlFor="disp-hoy" className="text-sm font-medium text-gray-300 cursor-pointer">Hoy</label>
+              <div className="mb-4">
+                <h4 className="text-xs font-bold text-zinc-300 mb-2">Disponibilidad</h4>
+                <RadioGroup defaultValue="flexible" className="space-y-2.5">
+                  <div className="flex items-center space-x-2.5">
+                    <RadioGroupItem value="hoy" id="disp-hoy" className="border-white/30 text-white fill-white w-4 h-4" />
+                    <label htmlFor="disp-hoy" className="text-xs font-medium text-gray-300 cursor-pointer">Hoy</label>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="semana" id="disp-semana" className="border-white/30 text-white fill-white" />
-                    <label htmlFor="disp-semana" className="text-sm font-medium text-gray-300 cursor-pointer">Esta semana</label>
+                  <div className="flex items-center space-x-2.5">
+                    <RadioGroupItem value="semana" id="disp-semana" className="border-white/30 text-white fill-white w-4 h-4" />
+                    <label htmlFor="disp-semana" className="text-xs font-medium text-gray-300 cursor-pointer">Esta semana</label>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <RadioGroupItem value="flexible" id="disp-flexible" className="border-white/30 text-white fill-white" />
-                    <label htmlFor="disp-flexible" className="text-sm font-medium text-white cursor-pointer">Flexible</label>
+                  <div className="flex items-center space-x-2.5">
+                    <RadioGroupItem value="flexible" id="disp-flexible" className="border-white/30 text-white fill-white w-4 h-4" />
+                    <label htmlFor="disp-flexible" className="text-xs font-medium text-white cursor-pointer">Flexible</label>
                   </div>
                 </RadioGroup>
               </div>
 
-
               {/* Botones de acción de filtros */}
-              <div className="flex gap-3">
-                <Button onClick={applyFilters} className="flex-1 bg-white/10 hover:bg-white/20 text-white border-none rounded-md">
+              <div className="flex gap-2">
+                <Button onClick={applyFilters} className="flex-1 bg-white/10 hover:bg-white/20 text-white border-none rounded-md h-8 text-xs px-2 font-medium">
                   Aplicar
                 </Button>
-                <Button variant="outline" onClick={clearFilters} className="flex-1 border-white/20 text-white hover:bg-white/5 rounded-md">
-                  Limpiar filtros
+                <Button variant="outline" onClick={clearFilters} className="flex-1 border-white/20 text-white hover:bg-white/5 rounded-md h-8 text-xs px-2 font-medium">
+                  Limpiar
                 </Button>
               </div>
             </motion.div>

@@ -194,7 +194,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
   }
 
   return (
-    <section id="agendar" className="py-24 relative overflow-hidden bg-transparent print:p-0 print:bg-white print:text-black">
+    <section id="agendar" className="py-12 relative overflow-hidden bg-transparent print:p-0 print:bg-white print:text-black">
       {/* Decoración de fondo (oculto al imprimir) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-3xl print:hidden" />
 
@@ -203,22 +203,22 @@ export function BookingSection({ artist }: BookingSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16 print:hidden"
+          className="text-center mb-8 print:hidden"
         >
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
             Agenda con {artist.name.split(' ')[0]}
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
             Reserva tu sesión online con {artist.name}. Confirma tu cita al instante con un pago seguro de garantía.
           </p>
         </motion.div>
 
         {/* Pasos de progreso (oculto al imprimir) */}
-        <div className="flex items-center justify-center mb-12 print:hidden">
+        <div className="flex items-center justify-center mb-8 print:hidden">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex items-center">
               <div
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 border-2 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 border-2 ${
                   step > s
                     ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] scale-105"
                     : step === s
@@ -226,11 +226,11 @@ export function BookingSection({ artist }: BookingSectionProps) {
                       : "bg-black/40 text-white/40 border-white/20"
                 }`}
               >
-                {step > s ? <Check className="w-5 h-5" /> : s}
+                {step > s ? <Check className="w-4 h-4" /> : s}
               </div>
               {s < 4 && (
                 <div
-                  className={`w-12 sm:w-20 h-1 mx-2 transition-all duration-500 rounded-full ${
+                  className={`w-8 sm:w-16 h-0.5 mx-2 transition-all duration-500 rounded-full ${
                     step > s ? "bg-white shadow-[0_0_5px_rgba(255,255,255,0.4)]" : "bg-white/10"
                   }`}
                 />
@@ -240,7 +240,7 @@ export function BookingSection({ artist }: BookingSectionProps) {
         </div>
 
         {/* Contenedor del formulario */}
-        <div className="bg-black/85 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
+        <div className="bg-black/85 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-2xl print:bg-white print:text-black print:border-none print:shadow-none print:p-0">
           
           {showLoginSuccess && (
             <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-xl text-sm flex items-center justify-center gap-2 mb-6 animate-pulse-slow">

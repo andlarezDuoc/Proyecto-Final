@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { supabase } from "@/lib/supabase"
-import { Menu, X, ChevronDown, User, PenTool, LogOut, Home, Users, Image as ImageIcon, Calendar, Star, MapPin } from "lucide-react"
+import { Menu, X, ChevronDown, User, PenTool, LogOut, Home, Users, Image as ImageIcon, Calendar, Star, MapPin, Camera } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -29,6 +29,8 @@ const getIconForSection = (id: string) => {
       return Star
     case "ubicacion":
       return MapPin
+    case "cicatrizacion":
+      return Camera
     default:
       return Home
   }
@@ -52,13 +54,17 @@ export function Navigation() {
       ]
     }
     if (pathname.startsWith("/artist/")) {
-      return [
+      const baseSections = [
         { id: "sobre-mi", label: "Sobre Mí" },
         { id: "galeria", label: "Portafolio" },
         { id: "agendar", label: "Agendar" },
         { id: "resenas", label: "Reseñas" },
         { id: "ubicacion", label: "Ubicación" },
       ]
+      if (userRole === "client") {
+        baseSections.push({ id: "cicatrizacion", label: "Cicatrización" })
+      }
+      return baseSections
     }
     return []
   }
@@ -131,6 +137,10 @@ export function Navigation() {
   }, [sections])
 
   const handleNavClick = (sectionId: string) => {
+    if (sectionId === "cicatrizacion") {
+      window.dispatchEvent(new Event("open-healing-report"))
+      return
+    }
     const element = document.getElementById(sectionId)
     if (element) {
       const offset = 100 // Ajuste de altura de cabecera
